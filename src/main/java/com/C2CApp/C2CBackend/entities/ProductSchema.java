@@ -30,19 +30,19 @@ public class ProductSchema {
     private String sellerId;
 
     @Column(nullable = false)
-    private String status;
+    private String status = "Unsold";
 
     public ProductSchema() {
         this.productId = UUID.randomUUID().toString();
     }
 
-    public ProductSchema(String title, String description, double price, String category, String condition, String sellerId, String status) {
+    public ProductSchema(String title, String description, double price, String category, String productCondition, String sellerId, String status) {
         this.productId = UUID.randomUUID().toString();
         this.title = title;
         this.description = description;
         this.price = price;
         this.category = category;
-        this.productCondition = condition; // Fixed assignment
+        this.productCondition = productCondition; 
         this.sellerId = sellerId;
         this.status = status;
     }
@@ -92,8 +92,8 @@ public class ProductSchema {
         return productCondition;
     }
 
-    public void setProductCondition(String condition) { // Fixed setter parameter
-        this.productCondition = condition;
+    public void setProductCondition(String productCondition) { // Fixed setter parameter
+        this.productCondition = productCondition;
     }
 
     public String getSellerId() {

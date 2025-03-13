@@ -1,6 +1,9 @@
 package com.C2CApp.C2CBackend.controller;
 
 import com.C2CApp.C2CBackend.entities.*;
+import com.C2CApp.C2CBackend.dtos.SignInAndSignUpResponse;
+import com.C2CApp.C2CBackend.dtos.SignInDetails;
+import com.C2CApp.C2CBackend.dtos.SignUpDetails;
 import com.C2CApp.C2CBackend.repositories.UserRepository;
 import com.C2CApp.C2CBackend.services.UserService;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -113,6 +116,7 @@ public class Authentication {
                 .compact();
         return ResponseEntity.ok(new SignInAndSignUpResponse(token, "Success", name, email));
     }
+
     @RequestMapping(
         value = "/getInfo",
         method = RequestMethod.GET,  

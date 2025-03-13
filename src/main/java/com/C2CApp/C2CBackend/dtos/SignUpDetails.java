@@ -1,14 +1,16 @@
-package com.C2CApp.C2CBackend.entities;
+package com.C2CApp.C2CBackend.dtos;
 
-public class SignInDetails {
+public class SignUpDetails {
     private String email;
+    private String name;
     private String password;
 
-    public SignInDetails() {
+    public SignUpDetails() {
     }
 
-    public SignInDetails(String email, String password) {
+    public SignUpDetails(String email, String name, String password) {
         this.email = email;
+        this.name = name;
         this.password = password;
     }
 
@@ -18,6 +20,14 @@ public class SignInDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
