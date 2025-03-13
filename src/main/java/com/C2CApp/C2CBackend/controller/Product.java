@@ -41,7 +41,7 @@ public class Product {
             method = RequestMethod.POST,
             consumes = "application/json",
             produces = "application/json")
-    public ResponseEntity<SellProductResponse> makeOffer(@RequestHeader("Authorization") String token,@RequestBody SellProductInput sellProductInput) {
+    public ResponseEntity<SellProductResponse> create(@RequestHeader("Authorization") String token,@RequestBody SellProductInput sellProductInput) {
 
         if (token == null) {
             return ResponseEntity.badRequest().build();
