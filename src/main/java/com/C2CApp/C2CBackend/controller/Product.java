@@ -1,8 +1,8 @@
 package com.C2CApp.C2CBackend.controller;
 
-import com.C2CApp.C2CBackend.dtos.SellProductInput;
-import com.C2CApp.C2CBackend.dtos.SellProductResponse;
 import com.C2CApp.C2CBackend.entities.ProductSchema;
+import com.C2CApp.C2CBackend.entities.SellProductInput;
+import com.C2CApp.C2CBackend.entities.SellProductResponse;
 import com.C2CApp.C2CBackend.entities.UserSchema;
 import com.C2CApp.C2CBackend.repositories.ProductRepository;
 import com.C2CApp.C2CBackend.services.*;

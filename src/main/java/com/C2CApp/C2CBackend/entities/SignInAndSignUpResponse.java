@@ -1,4 +1,4 @@
-package com.C2CApp.C2CBackend.dtos;
+package com.C2CApp.C2CBackend.entities;
 
 public class SignInAndSignUpResponse {
     private String token;
