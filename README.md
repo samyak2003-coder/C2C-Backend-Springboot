@@ -19,3 +19,20 @@ Ensure you have the following installed:
 ```bash
 git clone https://github.com/samyak2003-coder/C2C-Backend-Springboot.git
 cd C2C-Backend-Springboot
+```
+
+#### 2️⃣ Configure MySQL Database
+```bash
+CREATE DATABASE ooad;
+```
+
+#### 3️⃣ Build and Run the Application
+```bash
+./gradlew build
+./gradlew bootRun
+```
+
+#### Application URL 
+http://localhost:8080
+
+
