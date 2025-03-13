@@ -113,6 +113,7 @@ public class Authentication {
                 .compact();
         return ResponseEntity.ok(new SignInAndSignUpResponse(token, "Success", name, email));
     }
+
     @RequestMapping(
         value = "/getInfo",
         method = RequestMethod.GET,  

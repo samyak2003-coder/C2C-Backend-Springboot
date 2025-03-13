@@ -1,60 +1,30 @@
 package com.C2CApp.C2CBackend.entities;
 
-import jakarta.persistence.*;
-import java.util.UUID;
+import jakarta.persistence.Column;
 
-@Entity
-@Table(name = "products")
-public class ProductSchema {
-    
-    @Id
-    @Column(nullable = false)
-    private String productId;
-
-    @Column(nullable = false)
+public class SellProductInput {
     private String title;
-
-    @Column(nullable = false)
     private String description;
-
-    @Column(nullable = false)
     private double price;
-
-    @Column(nullable = false)
     private String category;
-
-    @Column(nullable = false)
     private String productCondition;
-
+    
     @Column(nullable = false)
-    private String sellerId;
+    private String status = "Unsold"; // Default value
 
-    @Column(nullable = false)
-    private String status = "Unsold";
+    public SellProductInput() {}
 
-    public ProductSchema() {
-        this.productId = UUID.randomUUID().toString();
-    }
-
-    public ProductSchema(String title, String description, double price, String category, String productCondition, String sellerId, String status) {
-        this.productId = UUID.randomUUID().toString();
+    public SellProductInput(String title, String description, double price, String category, 
+                       String productCondition, String sellerId, String status) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.category = category;
-        this.productCondition = productCondition; 
-        this.sellerId = sellerId;
+        this.productCondition = productCondition;
         this.status = status;
     }
 
     // Getters and Setters
-    public String getProductId() {
-        return productId;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
 
     public String getTitle() {
         return title;
@@ -92,16 +62,8 @@ public class ProductSchema {
         return productCondition;
     }
 
-    public void setProductCondition(String productCondition) { // Fixed setter parameter
+    public void setProductCondition(String productCondition) {
         this.productCondition = productCondition;
-    }
-
-    public String getSellerId() {
-        return sellerId;
-    }
-
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
     }
 
     public String getStatus() {
