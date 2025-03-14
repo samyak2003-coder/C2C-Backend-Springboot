@@ -52,6 +52,7 @@ dependencies {
     // For JSP (optional), if you're planning to use it (although you may want to remove this)
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper' // Tomcat JSP support
     implementation 'javax.servlet:jstl:1.2' // JSTL support
+    implementation 'javax.servlet:javax.servlet-api:4.0.1'
 }
 
 tasks.named('test') {
