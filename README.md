@@ -26,6 +26,8 @@ cd C2C-Backend-Springboot
 CREATE DATABASE ooad;
 ```
 
+#### Add an environment file mentioning JWT_SECRET, format mentioned in .env.example
+
 #### 3️⃣ Build and Run the Application
 ```bash
 ./gradlew build

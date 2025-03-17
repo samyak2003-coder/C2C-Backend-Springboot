@@ -3,6 +3,7 @@ package com.C2CApp.C2CBackend.entities;
 import jakarta.persistence.Column;
 
 public class SellProductInput {
+    String token;
     private String title;
     private String description;
     private double price;
@@ -15,16 +16,24 @@ public class SellProductInput {
     public SellProductInput() {}
 
     public SellProductInput(String title, String description, double price, String category, 
-                       String productCondition, String sellerId, String status) {
+                       String productCondition, String sellerId,String token, String status) {
         this.title = title;
         this.description = description;
         this.price = price;
         this.category = category;
         this.productCondition = productCondition;
         this.status = status;
+        this.token = token;
     }
 
     // Getters and Setters
+    public String getToken(){
+        return token;
+    }
+
+    public void setToken(String token){
+        this.token = token;
+    }
 
     public String getTitle() {
         return title;

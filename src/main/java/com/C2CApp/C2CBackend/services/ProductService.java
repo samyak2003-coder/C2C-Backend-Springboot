@@ -21,7 +21,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Optional<ProductSchema> getProductById(String productId) {
+    public Optional<ProductSchema> getByProductId(String productId) {
         return productRepository.findById(productId);
     }
 

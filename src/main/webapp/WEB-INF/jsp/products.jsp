@@ -140,46 +140,73 @@ h1 {
     </style>
 </head>
 <body>
+
+<%
+    String token = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("auth_token")) {
+                token = cookie.getValue();
+            }
+        }
+    }
+%>
 <div id="navbar"><jsp:include page="navbar.jsp"></jsp:include></div>
 
+
 <div class="form-container">
-    <h1>Sign Up</h1>
+    <h1>Sell Product</h1>
 
-    <form:form method="POST" action="/signup" modelAttribute="signUpDetails">
+    <form:form method="POST" action="/create-products" modelAttribute="sellProductDetails">
         <div class="form-group">
-            <label for="email">E-Mail</label>
-            <form:input id="email" path="email" cssClass="form-control"/>
-            <form:errors path="email" cssStyle="color: red"/>
+            <label for="title">Title</label>
+            <form:input id="title" path="title" cssClass="form-control"/>
+            <form:errors path="title" cssStyle="color: red"/>
         </div>
 
         <div class="form-group">
-            <label for="name">Name</label>
-            <form:input id="name" path="name" cssClass="form-control"/>
-            <form:errors path="name" cssStyle="color: red"/>
+            <label for="description">Description</label>
+            <form:input id="description" path="description" cssClass="form-control"/>
+            <form:errors path="description" cssStyle="color: red"/>
         </div>
 
         <div class="form-group">
-            <label for="password">Password</label>
-            <form:password id="password" path="password"/>
-            <form:errors path="password" cssStyle="color: red"/>
+            <label for="price">Price</label>
+            <form:input id="price" path="price" cssClass="form-control"/>
+            <form:errors path="price" cssStyle="color: red"/>
         </div>
 
-        <form:button cssClass="btn btn-primary">Sign Up</form:button>
+        <div class="form-group">
+            <label for="category">Category</label>
+            <form:input id="category" path="category" cssClass="form-control"/>
+            <form:errors path="category" cssStyle="color: red"/>
+        </div>
+
+        <div class="form-group">
+            <label for="productCondition">Product Condition</label>
+            <form:input id="productCondition" path="productCondition" cssClass="form-control"/>
+            <form:errors path="productCondition" cssStyle="color: red"/>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Status</label>
+            <form:input id="status" path="status" cssClass="form-control"/>
+            <form:errors path="status" cssStyle="color: red"/>
+        </div>
+
+        <!-- Hidden field to pass token -->
+        <form:hidden path="token" value="<%= token %>" />
+
+        <form:button cssClass="btn btn-primary">Submit</form:button>
     </form:form>
 
-    <!--- Check login status and display message -->
-<% Object status = session.getAttribute("AuthStatus"); %>
-<% if (status != null) { %>
+    <% Object status = session.getAttribute("ProductStatus"); %>
     <% if ("FAILED".equals(status)) { %>
         <div class="alert alert-danger">
-            Signup failed. Please try again!!!
-        </div>
-    <% } else if ("USER_EXISTS".equals(status)) { %>
-        <div class="alert alert-warning">
-            This email is already registered. Try logging in instead!
+            Product submission failed. Please try again!
         </div>
     <% } %>
-<% } %>
 </div>
 
 </body>

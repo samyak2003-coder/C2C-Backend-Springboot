@@ -53,6 +53,7 @@ dependencies {
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper' // Tomcat JSP support
     implementation 'javax.servlet:jstl:1.2' // JSTL support
     implementation 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation 'org.json:json:20240303' 
 }
 
 tasks.named('test') {
