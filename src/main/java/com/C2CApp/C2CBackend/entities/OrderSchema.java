@@ -21,6 +21,9 @@ public class OrderSchema {
     @Column(nullable = false)
     private String productId;
 
+    @Column(nullable = false)
+    private Double orderPrice;
+
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date orderDate;
@@ -32,11 +35,12 @@ public class OrderSchema {
         this.orderId = UUID.randomUUID().toString();
     }
 
-    public OrderSchema(String buyerId, String sellerId, String productId, Date orderDate, String paymentMethod) {
+    public OrderSchema(String buyerId, String sellerId, String productId,Double orderPrice, Date orderDate, String paymentMethod) {
         this.orderId = UUID.randomUUID().toString();
         this.buyerId = buyerId;
         this.sellerId = sellerId;
         this.productId = productId;
+        this.orderPrice = orderPrice;
         this.orderDate = orderDate;
         this.paymentMethod = paymentMethod;
     }
@@ -48,6 +52,14 @@ public class OrderSchema {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public Double getOrderPrice(){
+        return orderPrice;
+    }
+
+    public void setOrderPrice(Double orderPrice){
+        this.orderPrice = orderPrice;
     }
 
     public String getBuyerId() {

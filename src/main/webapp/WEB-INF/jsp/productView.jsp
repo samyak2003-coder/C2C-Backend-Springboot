@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.io.*, java.net.HttpURLConnection, java.net.URL" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ page import="org.json.JSONObject" %>
 
 <!DOCTYPE html>
@@ -90,9 +91,55 @@
             background-color: #2d87f0;
             color: white;
         }
+
+               .bid-section {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .bid-input {
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            width: 200px;
+        }
+
+        .make-bid-btn {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: #2d87f0;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .make-bid-btn:hover {
+            background-color: #1e66c1;
+        }
     </style>
 </head>
 <body>
+<%
+    String token = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals("auth_token")) {
+                token = cookie.getValue();
+            }
+        }
+    }
+
+    // Retrieve OfferStatus session attribute
+    String offerStatus = (String) session.getAttribute("OfferStatus");
+    if (offerStatus != null) {
+        session.removeAttribute("OfferStatus"); // Clear after displaying
+    }
+%>
     <div id="navbar"><jsp:include page="navbar.jsp"></jsp:include></div>
 
     <div class="product-detail">
@@ -116,6 +163,7 @@
                         reader.close();
 
                         JSONObject product = new JSONObject(apiResponse.toString());
+                        String sellerId = product.getString("sellerId");
 
         %>
                         <div class="product-title"><%= product.getString("title") %></div>
@@ -128,6 +176,15 @@
                             <p class="product-seller"><span>Seller ID:</span> <%= product.getString("sellerId") %></p>
                             <p class="product-status"><span>Status:</span> <%= product.getString("status") %></p>
                         </div>
+
+                        <form:form class ="" method="POST" action="/create-offer" modelAttribute="createOfferDetails">
+                            <form:input id="offeredPrice" class="bid-input" path="offeredPrice" />
+                            <form:hidden path="sellerId" value="<%= sellerId %>" />
+                            <form:hidden path="offerDate" value="<%= java.time.LocalDate.now() %>" />
+                            <form:hidden path="token" value="<%= token %>" />
+                            <form:hidden path="productId" value="<%= productId %>" />
+                            <form:button class="make-bid-btn">Make bid</form:button>
+                        </form:form>
 
         <%
                     } else {
@@ -142,5 +199,29 @@
             }
         %>
     </div>
+
+    <% if (offerStatus != null) { %>
+    <div class="error-message">
+        <%
+            switch (offerStatus) {
+                case "BINDING_ERROR":
+                    out.println("Form validation failed. Please check your inputs.");
+                    break;
+                case "TOKEN_PARSE_ERROR":
+                    out.println("Invalid session. Please log in again.");
+                    break;
+                case "USER_NOT_FOUND":
+                    out.println("User not found. Please try again.");
+                    break;
+                case "PRICE_EMPTY":
+                    out.println("Invalid price entered. Please enter a valid amount.");
+                    break;
+                default:
+                    out.println(offerStatus);
+                    break;
+            }
+        %>
+    </div>
+<% } %>
 </body>
 </html>

@@ -11,7 +11,7 @@ public class SellProductInput {
     private String productCondition;
     
     @Column(nullable = false)
-    private String status = "Unsold"; // Default value
+    private String status = "Unsold"; 
 
     public SellProductInput() {}
 

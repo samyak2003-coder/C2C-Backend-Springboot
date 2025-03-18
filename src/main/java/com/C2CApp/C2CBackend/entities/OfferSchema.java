@@ -1,5 +1,5 @@
 package com.C2CApp.C2CBackend.entities;
-
+import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.UUID;
@@ -22,31 +22,28 @@ public class OfferSchema {
     private String sellerId;
 
     @Column(nullable = false)
-    private double offeredPrice;
+    private Double offeredPrice;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date offerDate;
 
     @Column(nullable = false)
-    private String status = "Not confirmed";
-
-    @Column(nullable = true)
-    private String message;
+    private String status = "Not accepted";
 
     public OfferSchema() {
         this.offerId = UUID.randomUUID().toString();
     }
 
-    public OfferSchema(String productId, String buyerId, double offeredPrice, Date offerDate, String status, String message, String sellerId) {
+    public OfferSchema(String buyerId,Date offerDate,Double offeredPrice, String productId, String status, String sellerId) {
         this.offerId = UUID.randomUUID().toString();
-        this.productId = productId;
         this.buyerId = buyerId;
-        this.sellerId = sellerId;
-        this.offeredPrice = offeredPrice;
         this.offerDate = offerDate;
-        this.status = status;
-        this.message = message;
+        this.offeredPrice = offeredPrice;
+        this.productId = productId;
+        this.status =status;
+        this.sellerId = sellerId;
     }
 
     // Getters and Setters
@@ -82,11 +79,11 @@ public class OfferSchema {
         this.sellerId = sellerId;
     }
 
-    public double getOfferedPrice() {
+    public Double getOfferedPrice() {
         return offeredPrice;
     }
 
-    public void setOfferedPrice(double offeredPrice) {
+    public void setOfferedPrice(Double offeredPrice) {
         this.offeredPrice = offeredPrice;
     }
 
@@ -104,13 +101,5 @@ public class OfferSchema {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }

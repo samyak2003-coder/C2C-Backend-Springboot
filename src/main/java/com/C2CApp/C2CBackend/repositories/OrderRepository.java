@@ -9,7 +9,6 @@ import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<OrderSchema, String> {
-    Optional<OrderSchema> findById(String orderId);
     List<OrderSchema> findByBuyerId(String buyerId);
     List<OrderSchema> findBySellerId(String sellerId);
 }

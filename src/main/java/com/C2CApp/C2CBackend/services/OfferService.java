@@ -3,6 +3,7 @@ package com.C2CApp.C2CBackend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.C2CApp.C2CBackend.entities.OfferSchema;
+import com.C2CApp.C2CBackend.entities.UpdateOfferInput;
 import com.C2CApp.C2CBackend.repositories.OfferRepository;
 import java.util.List;
 import java.util.Optional;
@@ -20,8 +21,17 @@ public class OfferService {
         return offerRepository.findAll();
     }
 
+    public Optional<OfferSchema> getOfferById(String offerId){
+        return offerRepository.findByOfferId(offerId);
+    }
+
+
     public List<OfferSchema> getOfferByBuyerId(String buyerId){
-        return offerRepository.findByBuyerId(buyerId);
+        return offerRepository.findByBuyerIdCustom(buyerId);
+    }
+
+    public List<OfferSchema> getOfferBySellerId(String sellerId){
+        return offerRepository.findBySellerIdCustom(sellerId);
     }
 
     public void createOffer(OfferSchema offer){
@@ -35,11 +45,15 @@ public class OfferService {
             updatedOffer.setOfferedPrice(offer.getOfferedPrice());
             updatedOffer.setOfferDate(offer.getOfferDate());
             updatedOffer.setStatus(offer.getStatus());
-            updatedOffer.setMessage(offer.getMessage());
         }
     }
 
-    public void deleteOffer(String offerId){
-        offerRepository.deleteById(offerId);
+    public void deleteOfferById(String offerId){
+        offerRepository.deleteByOfferId(offerId);
+    }
+
+    public void updateOfferStatus(String offerId, String status) {
+        offerRepository.updateOfferStatus(offerId, status);
     }
 }
+
