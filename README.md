@@ -1,8 +1,8 @@
 # C2C Backend - Spring Boot  
 
-This is the backend for the **C2C Web App**, built using **Spring Boot**, **MySQL**, and **Gradle**.  
-
-## 🚀 Getting Started  
+This is the backend for the **C2C Web App**, built using **Spring Boot**, **MySQL**, and **Gradle**. 
+## Deep diving into an older frontend stack of JSP (below is a video tutorial for my webapp demo) 
+## I know Endpoints are still very buggy...as rerouting isnt handled properly thanks to the old JSP technology
 
 ### Prerequisites  
 
@@ -34,7 +34,7 @@ CREATE DATABASE ooad;
 ./gradlew bootRun
 ```
 
-#### Application URL 
-http://localhost:8080
+#### Application URL (i have mentioned 8081 in application.properties cuz tomcats server was running, feel free to edit there)
+http://localhost:8081
 
 
