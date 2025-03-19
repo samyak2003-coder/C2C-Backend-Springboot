@@ -8,8 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import com.C2CApp.C2CBackend.entities.DeleteAdminDetails;
 import com.C2CApp.C2CBackend.entities.ProductSchema;
-import com.C2CApp.C2CBackend.entities.SellProductInput;
+import com.C2CApp.C2CBackend.entities.SellProductDetails;
 import com.C2CApp.C2CBackend.entities.UserSchema;
 import com.C2CApp.C2CBackend.services.ProductService;
 import com.C2CApp.C2CBackend.services.UserService;
@@ -40,7 +41,7 @@ public class ProductsController {
     
     @PostMapping("/create-products")
     public String create(
-        @Valid @ModelAttribute("sellProductDetails") SellProductInput form,
+        @Valid @ModelAttribute("sellProductDetails") SellProductDetails form,
         BindingResult bindingResult,
         HttpSession session,
         HttpServletResponse response
@@ -105,5 +106,14 @@ public class ProductsController {
     
         return ResponseEntity.ok(product.get()); 
     }
-    
+
+    @PostMapping("/delete-product")
+    public String deleteProduct(@Valid @ModelAttribute("deleteEntityDetails") DeleteAdminDetails form,
+        BindingResult bindingResult,
+        HttpSession session,
+        HttpServletResponse response) {
+            String productId = form.getEntityId();
+            productService.deleteProduct(productId);
+            return "admin";
+    }
 }

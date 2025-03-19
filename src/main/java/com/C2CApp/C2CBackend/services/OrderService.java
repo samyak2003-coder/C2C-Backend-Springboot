@@ -16,7 +16,7 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public List<OrderSchema> getOrders() {
+    public List<OrderSchema> getAllOrders() {
         return orderRepository.findAll();
     }
 
@@ -33,6 +33,6 @@ public class OrderService {
     }
 
     public void deleteOrder(String orderId){
-        orderRepository.deleteById(orderId);
+        orderRepository.deleteByOrderId(orderId);
     }
 }

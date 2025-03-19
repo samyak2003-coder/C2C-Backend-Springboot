@@ -7,8 +7,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.C2CApp.C2CBackend.entities.CreateOfferInput;
-import com.C2CApp.C2CBackend.entities.DeleteOfferDetails;
+import com.C2CApp.C2CBackend.entities.DeleteAdminDetails;
 import com.C2CApp.C2CBackend.entities.OfferSchema;
+import com.C2CApp.C2CBackend.entities.RemoveOfferDetails;
 import com.C2CApp.C2CBackend.entities.UpdateOfferInput;
 import com.C2CApp.C2CBackend.entities.UserSchema;
 import com.C2CApp.C2CBackend.services.OfferService;
@@ -157,7 +158,17 @@ public ResponseEntity<?> getByUserId(HttpServletRequest request) {
 }
 
     @PostMapping("/delete-offer")
-    public String deleteOffer(@Valid @ModelAttribute("deleteOfferDetails") DeleteOfferDetails form,
+    public String deleteOffer(@Valid @ModelAttribute("deleteEntityDetails") DeleteAdminDetails form,
+        BindingResult bindingResult,
+        HttpSession session,
+        HttpServletResponse response) {
+            String offerId = form.getEntityId();
+            offerService.deleteOfferById(offerId);
+            return "offers";
+    }
+
+    @PostMapping("/remove-offer")
+    public String deleteOffer(@Valid @ModelAttribute("removeOfferDetails") RemoveOfferDetails form,
         BindingResult bindingResult,
         HttpSession session,
         HttpServletResponse response) {

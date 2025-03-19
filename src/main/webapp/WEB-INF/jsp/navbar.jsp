@@ -42,16 +42,6 @@
         justify-content: center;
         margin: 0 30px;
     }
-
-    .navbar .search-bar input {
-        width: 60%;
-        padding: 12px 15px;
-        font-size: 18px;
-        border: 2px solid #ccc;
-        border-radius: 6px;
-        outline: none;
-    }
-
     /* Buttons container */
     .navbar .buttons-container {
         display: flex;

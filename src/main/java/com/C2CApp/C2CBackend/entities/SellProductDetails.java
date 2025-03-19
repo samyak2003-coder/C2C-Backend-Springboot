@@ -2,7 +2,7 @@ package com.C2CApp.C2CBackend.entities;
 
 import jakarta.persistence.Column;
 
-public class SellProductInput {
+public class SellProductDetails {
     String token;
     private String title;
     private String description;
@@ -13,9 +13,9 @@ public class SellProductInput {
     @Column(nullable = false)
     private String status = "Unsold"; 
 
-    public SellProductInput() {}
+    public SellProductDetails() {}
 
-    public SellProductInput(String title, String description, double price, String category, 
+    public SellProductDetails(String title, String description, double price, String category, 
                        String productCondition, String sellerId,String token, String status) {
         this.title = title;
         this.description = description;

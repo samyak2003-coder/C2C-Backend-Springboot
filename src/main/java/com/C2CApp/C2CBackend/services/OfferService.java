@@ -17,7 +17,7 @@ public class OfferService {
         this.offerRepository = offerRepository;
     }
 
-    public List<OfferSchema> getOffers() {
+    public List<OfferSchema> getAllOffers() {
         return offerRepository.findAll();
     }
 

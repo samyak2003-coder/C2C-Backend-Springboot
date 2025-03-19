@@ -41,6 +41,6 @@ public class ProductService {
     }
 
     public void deleteProduct(String productId){
-        productRepository.deleteById(productId);
+        productRepository.deleteByProductId(productId);
     }
 }

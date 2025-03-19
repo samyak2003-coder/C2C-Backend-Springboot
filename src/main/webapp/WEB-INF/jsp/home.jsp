@@ -28,21 +28,22 @@
         }
 
         .products-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
             gap: 20px;
-            padding: 20px;
+            justify-content: center;
+            margin: 200px;
         }
 
         .product-box {
-            background-color: #000000;
+            background-color: #000000; /* Set background to black */
+            color: #fff; /* Set text color to white */
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             padding: 20px;
+            width: 300px;
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .product-box:hover {

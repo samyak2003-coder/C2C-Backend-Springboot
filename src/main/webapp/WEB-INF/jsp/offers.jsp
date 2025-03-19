@@ -288,7 +288,7 @@
                         <button type="submit" name="action" value="accept" class="accept">Accept</button>
                     </form:form>
 
-                    <form:form method="POST" action="/delete-offer" modelAttribute="deleteOfferDetails">
+                    <form:form method="POST" action="/remove-offer" modelAttribute="removeOfferDetails">
                     <input type="hidden" name="offerId" value="<%= offerId %>">
                     <button type="submit" class="reject">Reject</button>
                     </form:form>

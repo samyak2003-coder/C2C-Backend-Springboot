@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.C2CApp.C2CBackend.entities.CreateOrderDto;
+import com.C2CApp.C2CBackend.entities.DeleteAdminDetails;
 import com.C2CApp.C2CBackend.entities.OrderSchema;
 import com.C2CApp.C2CBackend.entities.UserSchema;
 import com.C2CApp.C2CBackend.services.OfferService;
@@ -137,5 +138,16 @@ public class OrderController {
             return ResponseEntity.status(500).body("An error occurred while retrieving offers.");
         }
     }   
+
+    @PostMapping("/delete-order")
+    public String deleteOrder(@Valid @ModelAttribute("deleteEntityDetails") DeleteAdminDetails form,
+        BindingResult bindingResult,
+        HttpSession session,
+        HttpServletResponse response){
+            String orderId = form.getEntityId();
+            
+            orderService.deleteOrder(orderId);
+            return "admin";
+    }
 
 }

@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,69 +135,35 @@ h1 {
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
-
     </style>
 </head>
 <body>
-
-<%
-    String token = null;
-    Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("auth_token")) {
-                token = cookie.getValue();
-            }
-        }
-    }
-%>
 <div id="navbar"><jsp:include page="navbar.jsp"></jsp:include></div>
 
-
 <div class="form-container">
-    <h1>Sell Product</h1>
+    <h1>Admin Sign In</h1>
 
-    <form:form method="POST" action="/create-products" modelAttribute="sellProductDetails">
+    <form:form method="POST" action="/signin" modelAttribute="signInDetails">
         <div class="form-group">
-            <label for="title">Title</label>
-            <form:input id="title" path="title" cssClass="form-control"/>
+            <label for="email">E-Mail</label>
+            <form:input path="email" cssClass="form-control"/>
+            <form:errors path="email" cssStyle="color: red"/>
         </div>
 
         <div class="form-group">
-            <label for="description">Description</label>
-            <form:input id="description" path="description" cssClass="form-control"/>
+            <label for="password">Password</label>
+            <form:password path="password" cssClass="form-control"/>
+            <form:errors path="password" cssStyle="color: red"/>
         </div>
 
-        <div class="form-group">
-            <label for="price">Price</label>
-            <form:input id="price" path="price" cssClass="form-control"/>
-        </div>
-
-        <div class="form-group">
-            <label for="category">Category</label>
-            <form:input id="category" path="category" cssClass="form-control"/>
-        </div>
-
-        <div class="form-group">
-            <label for="productCondition">Product Condition</label>
-            <form:input id="productCondition" path="productCondition" cssClass="form-control"/>
-        </div>
-
-        <div class="form-group">
-            <label for="status">Status</label>
-            <form:input id="status" path="status" cssClass="form-control"/>
-        </div>
-
-        <!-- Hidden field to pass token -->
-        <form:hidden path="token" value="<%= token %>" />
-
-        <form:button cssClass="btn btn-primary">Submit</form:button>
+        <form:button cssClass="btn btn-primary">Log in</form:button>
     </form:form>
 
-    <% Object status = session.getAttribute("ProductStatus"); %>
+    <!--- Check login status and display message -->
+    <% Object status = session.getAttribute("AuthStatus"); %>
     <% if ("FAILED".equals(status)) { %>
         <div class="alert alert-danger">
-            Product submission failed. Please try again!
+            Login failed. Please try again!!!
         </div>
     <% } %>
 </div>

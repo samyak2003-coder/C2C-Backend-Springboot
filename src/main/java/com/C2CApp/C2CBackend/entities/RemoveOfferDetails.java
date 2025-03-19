@@ -1,11 +1,11 @@
 package com.C2CApp.C2CBackend.entities;
 
-public class DeleteOfferDetails {
+public class RemoveOfferDetails {
     private String offerId;
 
-    public DeleteOfferDetails() {}
+    public RemoveOfferDetails() {}
 
-    public DeleteOfferDetails(String offerId){
+    public RemoveOfferDetails(String offerId){
         this.offerId = offerId;
     }
 
@@ -16,5 +16,4 @@ public class DeleteOfferDetails {
     public void setOfferId(String offerId){
         this.offerId = offerId;
     }
-
 }

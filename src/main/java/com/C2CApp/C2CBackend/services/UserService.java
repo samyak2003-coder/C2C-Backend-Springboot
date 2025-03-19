@@ -63,7 +63,7 @@ public class UserService {
         return passwordEncoder.matches(password, user.getPassword());
     }
 
-    public void deleteUser(String id) {
-        userRepository.deleteById(id);
+    public void deleteUser(String userId) {
+        userRepository.deleteById(userId);
     }
 }

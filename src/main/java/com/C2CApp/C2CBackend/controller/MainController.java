@@ -42,7 +42,7 @@ public class MainController {
 
     @GetMapping("/products")
     public String products(Model model) {
-        model.addAttribute("sellProductDetails", new SellProductInput());
+        model.addAttribute("sellProductDetails", new SellProductDetails());
         return "products";
     }
     
@@ -59,9 +59,9 @@ public class MainController {
 
     @GetMapping("/offers")
     public String showOffers(Model model){
-        model.addAttribute("deleteOfferDetails", new DeleteOfferDetails());
         model.addAttribute("createOrderDetails", new CreateOrderDto());
         model.addAttribute("updateOfferDetails", new UpdateOfferInput());
+        model.addAttribute("removeOfferDetails", new RemoveOfferDetails());
         return "offers";
     }
 
@@ -73,5 +73,17 @@ public class MainController {
     @GetMapping("/")
     public String home(){
         return "home";
+    }
+
+    @GetMapping("/admin")
+    public String admin(Model model){
+        model.addAttribute("deleteEntityDetails", new DeleteAdminDetails());
+        return "admin";
+    }
+
+    @GetMapping("/admin-login")
+    public String adminLogin(Model model){
+        model.addAttribute("signInDetails", new SignInDetails());
+        return "admin-login";
     }
 }
