@@ -1,6 +1,6 @@
 # C2C Backend - Spring Boot  
 
-This is the backend for the **C2C Web App**, built using **Spring Boot**, **MySQL**, and **Gradle**. 
+This is the full stack app for the **C2C Web App**, built using **Spring Boot**, **MySQL**, and **Gradle** and **JSP** (Frontend)
 ## Deep diving into an older frontend stack of JSP (below is a video tutorial for my webapp demo) 
 ## I know Endpoints are still very buggy...as rerouting isnt handled properly thanks to the old JSP technology
 https://github.com/user-attachments/assets/149e5968-f6ee-4436-bc70-5b1c06ecb598
