@@ -1,4 +1,5 @@
 # C2C Backend - Spring Boot  
+## Checkout the jsp branch for a JSP + Springboot full stack app
 
 This is the backend for the **C2C Web App**, built using **Spring Boot**, **MySQL**, and **Gradle**.  
 
