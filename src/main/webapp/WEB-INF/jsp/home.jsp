@@ -8,79 +8,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C2C Web App</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background-color: #212121;
-            color: white;
-        }
-
-        #navbar {
-            margin-bottom: 20px;
-            background-color: #000000;
-        }
-
-        .products-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin: 200px;
-        }
-
-        .product-box {
-            background-color: #000000; /* Set background to black */
-            color: #fff; /* Set text color to white */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 300px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .product-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
-        }
-
-        .product-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 10px;
-        }
-
-        .product-description {
-            font-size: 1rem;
-            color: #bbbbbb;
-            margin-bottom: 15px;
-            height: 60px;
-            overflow: hidden;
-        }
-
-        .product-price {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #ffbf00;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-    </style>
+    <title>C2C Web App - Home</title>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <div id="navbar"><jsp:include page="navbar.jsp"></jsp:include></div>
-<div class="products-container">
+<div class="main-content">
+    <div class="status-filters">
+        <button class="status-button" data-status="all">All</button>
+        <button class="status-button active" data-status="unsold">Available</button>
+        <button class="status-button" data-status="sold">Sold</button>
+    </div>
+
+    <script>
+        // Execute immediately to show only available products by default
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProductVisibility('unsold');
+        });
+    </script>
+    <div class="products-container">
     <%
         try {
             URL url = new URL("http://localhost:8081/get-products");
@@ -105,10 +51,10 @@
                     String productId = product.getString("productId"); 
     %>
                     <a href="/productView?productId=<%= productId %>">
-                        <div class="product-box">
-                            <div class="product-title"><%= product.getString("title") %></div>
-                            <div class="product-description"><%= product.getString("description") %></div>
-                            <div class="product-price">₹<%= product.getDouble("price") %></div>
+                        <div class="product-box" data-status="<%= product.getString("status").toLowerCase() %>">
+                            <div class="card-title"><%= product.getString("title") %></div>
+                            <div class="card-description"><%= product.getString("description") %></div>
+                            <div class="card-price">₹<%= product.getDouble("price") %></div>
                         </div>
                     </a>
     <%
@@ -118,6 +64,33 @@
             e.printStackTrace();
         }
     %>
+    </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusButtons = document.querySelectorAll('.status-button');
+        const productBoxes = document.querySelectorAll('.product-box');
+
+        function updateProductVisibility(status) {
+            productBoxes.forEach(box => {
+                if (status === 'all' || box.getAttribute('data-status') === status) {
+                    box.parentElement.style.display = 'block';
+                } else {
+                    box.parentElement.style.display = 'none';
+                }
+            });
+        }
+
+        statusButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                statusButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                updateProductVisibility(button.getAttribute('data-status'));
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

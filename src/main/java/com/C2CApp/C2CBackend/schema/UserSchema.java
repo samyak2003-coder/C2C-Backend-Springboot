@@ -1,4 +1,4 @@
-package com.C2CApp.C2CBackend.entities;
+package com.C2CApp.C2CBackend.schema;
 
 import jakarta.persistence.*;
 import java.util.UUID;

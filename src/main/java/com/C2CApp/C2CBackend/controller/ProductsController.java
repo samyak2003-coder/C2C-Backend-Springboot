@@ -9,9 +9,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.C2CApp.C2CBackend.entities.DeleteAdminDetails;
-import com.C2CApp.C2CBackend.entities.ProductSchema;
 import com.C2CApp.C2CBackend.entities.SellProductDetails;
-import com.C2CApp.C2CBackend.entities.UserSchema;
+import com.C2CApp.C2CBackend.schema.ProductSchema;
+import com.C2CApp.C2CBackend.schema.UserSchema;
 import com.C2CApp.C2CBackend.services.ProductService;
 import com.C2CApp.C2CBackend.services.UserService;
 

@@ -1,4 +1,4 @@
-package com.C2CApp.C2CBackend.entities;
+package com.C2CApp.C2CBackend.schema;
 import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.persistence.*;
 import java.util.Date;
@@ -30,7 +30,7 @@ public class OfferSchema {
     private Date offerDate;
 
     @Column(nullable = false)
-    private String status = "Not accepted";
+    private String status = "Pending";
 
     public OfferSchema() {
         this.offerId = UUID.randomUUID().toString();

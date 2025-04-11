@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C2C Web App - Offers</title>
+    <title>C2C Web App - Received Offers</title>
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
@@ -27,22 +27,17 @@
 <div id="navbar"><jsp:include page="navbar.jsp"></jsp:include></div>
 
 <div class="main-content">
-    <div class="offer-filters">
-        <button class="filter-button active" data-filter="my-offers">Offers you've Made</button>
-        <button class="filter-button" data-filter="received-offers">Offers on your Products</button>
-    </div>
-
     <div class="status-filters">
         <button class="status-button active" data-status="ongoing">Ongoing</button>
         <button class="status-button" data-status="completed">Completed</button>
     </div>
 
-    <div id="my-offers" class="offers-section active" data-current-status="ongoing">
-        <h2 class="section-header">Offers you've Made <span class="offer-count" id="my-offers-count"></span></h2>
+    <div class="offers-section active" data-current-status="ongoing">
+        <h2 class="section-header">Offers on your products <span class="offer-count" id="received-offers-count"></span></h2>
         <div class="offers-grid">
         <%
             try {
-                URL url = new URL("http://localhost:8081/get-offers");
+                URL url = new URL("http://localhost:8081/api/received-offers");
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
                 conn.setRequestProperty("Accept", "application/json");
@@ -58,26 +53,22 @@
                     }
                     reader.close();
 
-                    JSONObject offersResponse = new JSONObject(apiResponse.toString());
-                    JSONArray buyOffers = offersResponse.getJSONArray("buy");
-                    JSONArray sellOffers = offersResponse.getJSONArray("sell");
+                    JSONArray offers = new JSONObject(apiResponse.toString()).getJSONArray("offers");
+                    int offersCount = 0;
 
-                    int myOffersCount = 0;
-                    int receivedOffersCount = 0;
-
-                    for (int i = 0; i < buyOffers.length(); i++) {
-                        JSONObject offer = buyOffers.getJSONObject(i);
+                    for (int i = 0; i < offers.length(); i++) {
+                        JSONObject offer = offers.getJSONObject(i);
                         String status = offer.getString("status");
                         String offerId = offer.getString("offerId");
                         String productId = offer.getString("productId");
-                        String sellerId = offer.getString("sellerId");
+                        String buyerId = offer.getString("buyerId");
                         Double offeredPrice = offer.getDouble("offeredPrice");
-                        myOffersCount++;
+                        offersCount++;
         %>
                         <div class="offer-box">
                             <div class="card-id">Offer ID: <%= offerId %></div>
                             <div class="card-id">Product ID: <%= productId %></div>
-                            <div class="card-id">Seller ID: <%= sellerId %></div>
+                            <div class="card-id">Buyer ID: <%= buyerId %></div>
                             <div class="card-price">₹<%= offeredPrice %></div>
                             <div class="card-date">Offered on: <%= offer.getString("offerDate") %></div>
                             
@@ -88,36 +79,13 @@
                                 Product Title: <%= offer.getString("productTitle") %>
                                 <div class="product-status">Product Status: <%= offer.getString("productStatus") %></div>
                             </div>
-                        </div>
-        <%
-                    }
-        %>
-        </div>
-    </div>
 
-    <div id="received-offers" class="offers-section" data-current-status="ongoing">
-        <h2 class="section-header">Offers on My Products <span class="offer-count" id="received-offers-count"></span></h2>
-        <div class="offers-grid">
-        <%
-                    // Loop through 'sell' offers (offers on my products)
-                    for (int i = 0; i < sellOffers.length(); i++) {
-                        JSONObject offer = sellOffers.getJSONObject(i);
-                        String status = offer.getString("status");
-                        String offerId = offer.getString("offerId");
-                        receivedOffersCount++;
-        %>
-                        <div class="offer-box">
-                            <div class="card-id">Offer ID: <%= offerId %></div>
-                            <div class="card-id">Product ID: <%= offer.getString("productId") %></div>
-                            <div class="card-id">Seller ID: <%= offer.getString("sellerId") %></div>
-                            <div class="card-price">₹<%= offer.getDouble("offeredPrice") %></div>
-                            <div class="card-date">Offered on: <%= offer.getString("offerDate") %></div>
-                            
+                            <% if (status.equals("Pending")) { %>
                             <div class="card-actions">
                                 <form:form method="POST" action="/update-offer" modelAttribute="updateOfferDetails">
                                     <input type="hidden" name="offerId" value="<%= offerId %>">
                                     <input type="hidden" name="status" value="Accepted">
-                                    <button type="submit" name="action" value="accept" class="card-button accept">Accept</button>
+                                    <button type="submit" class="card-button accept">Accept</button>
                                 </form:form>
 
                                 <form:form method="POST" action="/remove-offer" modelAttribute="removeOfferDetails">
@@ -125,73 +93,39 @@
                                     <button type="submit" class="card-button reject">Reject</button>
                                 </form:form>
                             </div>
+                            <% } %>
                         </div>
         <%
                     }
         %>
-        </div>
-    </div>
-
-    <%
-                    // Update offer counts
-                    %>
                     <script>
-                        document.getElementById('my-offers-count').textContent = '(<%= myOffersCount %>)';
-                        document.getElementById('received-offers-count').textContent = '(<%= receivedOffersCount %>)';
+                        document.getElementById('received-offers-count').textContent = '(<%= offersCount %>)';
                     </script>
-                    <%
+        <%
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         %>
+        </div>
+    </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const filterButtons = document.querySelectorAll('.filter-button');
         const statusButtons = document.querySelectorAll('.status-button');
-        const offerSections = document.querySelectorAll('.offers-section');
         const offerBoxes = document.querySelectorAll('.offer-box');
 
         function updateOfferVisibility() {
-            const activeSection = document.querySelector('.offers-section.active');
-            const currentStatus = activeSection.getAttribute('data-current-status');
-            
+            const currentStatus = document.querySelector('.offers-section').getAttribute('data-current-status');
             offerBoxes.forEach(box => {
-                // Find the product status element within this offer box
-                const productStatusEl = box.querySelector('.product-status');
-                if (!productStatusEl) return;
-
-                const productStatus = productStatusEl.textContent.includes('Sold') ? 'Sold' : 'Unsold';
-                
-                if ((currentStatus === 'ongoing' && productStatus === 'Unsold') ||
-                    (currentStatus === 'completed' && productStatus === 'Sold')) {
-                    box.style.display = 'flex';
-                } else {
-                    box.style.display = 'none';
-                }
+                const offerStatus = box.querySelector('.card-status').textContent.trim();
+                // Show "Ongoing" if status is "Pending", show "Completed" if not "Pending"
+                const isVisible = (currentStatus === 'ongoing' && offerStatus === 'Pending') ||
+                                (currentStatus === 'completed' && offerStatus !== 'Pending');
+                box.style.display = isVisible ? 'flex' : 'none';
             });
         }
-
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const filterType = button.getAttribute('data-filter');
-                
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-                
-                offerSections.forEach(section => {
-                    if (section.id === filterType) {
-                        section.classList.add('active');
-                    } else {
-                        section.classList.remove('active');
-                    }
-                });
-                
-                updateOfferVisibility();
-            });
-        });
 
         statusButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -200,12 +134,13 @@
                 statusButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
                 
-                const activeSection = document.querySelector('.offers-section.active');
-                activeSection.setAttribute('data-current-status', status);
-                
+                document.querySelector('.offers-section').setAttribute('data-current-status', status);
                 updateOfferVisibility();
             });
         });
+
+        // Initial visibility update
+        updateOfferVisibility();
     });
 </script>
 

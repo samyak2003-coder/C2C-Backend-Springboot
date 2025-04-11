@@ -1,7 +1,8 @@
 package com.C2CApp.C2CBackend.services;
 
-import com.C2CApp.C2CBackend.entities.UserSchema;
 import com.C2CApp.C2CBackend.repositories.UserRepository;
+import com.C2CApp.C2CBackend.schema.UserSchema;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -2,8 +2,9 @@ package com.C2CApp.C2CBackend.services;
 
 import org.springframework.stereotype.Service;
 
-import com.C2CApp.C2CBackend.entities.ProductSchema;
 import com.C2CApp.C2CBackend.repositories.ProductRepository;
+import com.C2CApp.C2CBackend.schema.ProductSchema;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,7 @@ public class ProductService {
             updatedProduct.setCategory(product.getCategory());
             updatedProduct.setProductCondition(product.getProductCondition());
             updatedProduct.setStatus(product.getStatus());
+            productRepository.save(updatedProduct);
         }
     }
 

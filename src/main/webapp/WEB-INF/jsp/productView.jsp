@@ -9,118 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C2C Web App</title>
-    <style>
-
-         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background-color: #f4f7fc;
-        }
-
-        /* Styling for the product detail box */
-        .product-detail {
-            background-color: #000000; /* Changed to black */
-            border-radius: 10px;
-            padding: 30px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin: 40px auto;
-            max-width: 900px;
-            text-align: left;
-            font-family: Arial, sans-serif;
-            color: #ffffff; /* Changed text color to white */
-        }
-
-        .product-title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #ffffff; /* Changed to white */
-        }
-
-        .product-description {
-            font-size: 1.1rem;
-            color: #dcdcdc; /* Light gray for better readability */
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .product-price {
-            font-size: 1.75rem;
-            font-weight: bold;
-            color: #2d87f0;
-            margin-bottom: 20px;
-        }
-
-        .product-category, .product-condition, .product-seller, .product-status {
-            font-size: 1.2rem;
-            color: #dcdcdc; /* Light gray for better contrast */
-            margin-bottom: 10px;
-        }
-
-        .product-category span, .product-condition span, .product-seller span, .product-status span {
-            font-weight: bold;
-            color: #ffffff; /* Changed labels to white */
-        }
-
-        /* Additional styles for better layout */
-        .detail-section {
-            margin-bottom: 20px;
-        }
-
-        .detail-section p {
-            margin: 5px 0;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            font-size: 1.2rem;
-            color: #2d87f0;
-            text-decoration: none;
-            border: 2px solid #2d87f0;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-
-        .back-link:hover {
-            background-color: #2d87f0;
-            color: white;
-        }
-
-               .bid-section {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        .bid-input {
-            padding: 10px;
-            font-size: 1rem;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-right: 10px;
-            width: 200px;
-        }
-
-        .make-bid-btn {
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            background-color: #2d87f0;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .make-bid-btn:hover {
-            background-color: #1e66c1;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
 <%
@@ -134,14 +23,14 @@
         }
     }
 
-    // Retrieve OfferStatus session attribute
-    String offerStatus = (String) session.getAttribute("OfferStatus");
+    // Retrieve offerStatus session attribute
+    String offerStatus = (String) session.getAttribute("offerStatus");
     if (offerStatus != null) {
-        session.removeAttribute("OfferStatus"); // Clear after displaying
+        session.removeAttribute("offerStatus"); // Clear after displaying
     }
 %>
-    <div id="navbar"><jsp:include page="navbar.jsp"></jsp:include></div>
-
+<div id="navbar"><jsp:include page="navbar.jsp"></jsp:include></div>
+<div class="main-content">
     <div class="product-detail">
         <%
             String productId = request.getParameter("productId");
@@ -169,7 +58,11 @@
                         <div class="product-title"><%= product.getString("title") %></div>
                         <div class="product-description"><%= product.getString("description") %></div>
                         <div class="product-price">₹<%= product.getDouble("price") %></div>
-
+                        
+                        <% 
+                            String productStatus = product.getString("status");
+                            boolean isSold = "Sold".equals(productStatus);
+                        %>
                         <div class="detail-section">
                             <p class="product-category"><span>Category:</span> <%= product.getString("category") %></p>
                             <p class="product-condition"><span>Condition:</span> <%= product.getString("productCondition") %></p>
@@ -177,15 +70,30 @@
                             <p class="product-status"><span>Status:</span> <%= product.getString("status") %></p>
                         </div>
 
-                        <form:form class ="" method="POST" action="/create-offer" modelAttribute="createOfferDetails">
-                            <form:input id="offeredPrice" class="bid-input" path="offeredPrice" />
-                            <form:hidden path="sellerId" value="<%= sellerId %>" />
-                            <form:hidden path="offerDate" value="<%= java.time.LocalDate.now() %>" />
-                            <form:hidden path="token" value="<%= token %>" />
-                            <form:hidden path="productId" value="<%= productId %>" />
-                            <form:button class="make-bid-btn">Make bid</form:button>
+                        <% if (!isSold) { %>
+                        <form:form class="bid-section" method="POST" action="/create-offer" modelAttribute="createOfferDetails">
+                            <div class="bid-input-group">
+                                <form:input id="offeredPrice" 
+                                    class="form-control" 
+                                    path="offeredPrice" 
+                                    placeholder="Enter your offer amount" 
+                                    type="number"
+                                    step="0.01"
+                                    min="0.01"
+                                    required="true" />
+                                <form:errors path="offeredPrice" cssClass="error-message" />
+                                <form:hidden path="sellerId" value="<%= sellerId %>" />
+                                <form:hidden path="offerDate" value="<%= java.time.LocalDate.now() %>" />
+                                <form:hidden path="token" value="<%= token %>" />
+                                <form:hidden path="productId" value="<%= productId %>" />
+                                <form:button class="btn btn-primary">Make Offer</form:button>
+                            </div>
                         </form:form>
-
+                        <% } else { %>
+                        <div class="sold-message">
+                            This product has been sold and is no longer available for offers.
+                        </div>
+                        <% } %>
         <%
                     } else {
                         out.println("<p>Product not found!</p>");
@@ -201,27 +109,42 @@
     </div>
 
     <% if (offerStatus != null) { %>
-    <div class="error-message">
-        <%
-            switch (offerStatus) {
-                case "BINDING_ERROR":
-                    out.println("Form validation failed. Please check your inputs.");
-                    break;
-                case "TOKEN_PARSE_ERROR":
-                    out.println("Invalid session. Please log in again.");
-                    break;
-                case "USER_NOT_FOUND":
-                    out.println("User not found. Please try again.");
-                    break;
-                case "PRICE_EMPTY":
-                    out.println("Invalid price entered. Please enter a valid amount.");
-                    break;
-                default:
-                    out.println(offerStatus);
-                    break;
-            }
-        %>
-    </div>
-<% } %>
+        <div class="<%= offerStatus.equals("OFFER_SUCCESS") ? "success-message" : "error-message" %>">
+                <%
+                    switch (offerStatus) {
+                        case "BINDING_ERROR":
+                            out.println("Please check the following:<br>");
+                            out.println("• Offer price must be greater than 0<br>");
+                            out.println("• All required fields must be filled out");
+                            break;
+                        case "TOKEN_PARSE_ERROR":
+                            out.println("Your session has expired. Please log in again.");
+                            break;
+                        case "USER_NOT_FOUND":
+                            out.println("User account not found. Please log in again.");
+                            break;
+                        case "INVALID_PRICE":
+                            out.println("Please enter a valid positive amount for your offer.");
+                            break;
+                        case "PRODUCT_SOLD":
+                            out.println("This product has already been sold and is no longer available for offers.");
+                            break;
+                        case "PRODUCT_NOT_FOUND":
+                            out.println("The product you're trying to make an offer for could not be found.");
+                            break;
+                        case "OFFER_FAILED":
+                            out.println("Unable to make offer. Please try again later.");
+                            break;
+                        case "OFFER_SUCCESS":
+                            out.println("Your offer has been successfully submitted! The seller will review your offer.");
+                            break;
+                        default:
+                            out.println("An error occurred while processing your offer. Please try again.");
+                            break;
+                    }
+                %>
+            </div>
+    <% } %>
+</div>
 </body>
 </html>

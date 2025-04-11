@@ -3,16 +3,20 @@ package com.C2CApp.C2CBackend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.C2CApp.C2CBackend.entities.*;
+import com.C2CApp.C2CBackend.entities.CreateOfferInput;
+import com.C2CApp.C2CBackend.entities.DeleteAdminDetails;
+import com.C2CApp.C2CBackend.entities.RemoveOfferDetails;
+import com.C2CApp.C2CBackend.entities.SignInDetails;
+import com.C2CApp.C2CBackend.entities.SignUpDetails;
+import com.C2CApp.C2CBackend.entities.SellProductDetails;
+import com.C2CApp.C2CBackend.entities.UpdateOfferInput;
+import com.C2CApp.C2CBackend.schema.ProductSchema;
 import com.C2CApp.C2CBackend.services.OfferService;
 import com.C2CApp.C2CBackend.services.ProductService;
 
-import java.util.Optional;
 
 
 @Controller
@@ -40,10 +44,10 @@ public class MainController {
         return "signin";
     }
 
-    @GetMapping("/products")
+    @GetMapping("/sellProducts")
     public String products(Model model) {
         model.addAttribute("sellProductDetails", new SellProductDetails());
-        return "products";
+        return "sellProduct";
     }
     
     @GetMapping("/productView")
@@ -59,15 +63,9 @@ public class MainController {
 
     @GetMapping("/offers")
     public String showOffers(Model model){
-        model.addAttribute("createOrderDetails", new CreateOrderDto());
         model.addAttribute("updateOfferDetails", new UpdateOfferInput());
         model.addAttribute("removeOfferDetails", new RemoveOfferDetails());
         return "offers";
-    }
-
-    @GetMapping("/orders")
-    public String orders(){
-        return "orders";
     }
        
     @GetMapping("/")
