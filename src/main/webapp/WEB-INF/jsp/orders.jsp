@@ -10,73 +10,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C2C Web App</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fc;
-            margin: 0;
-            padding: 0;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc; /* Light background */
+    margin: 0;
+    padding: 0;
+}
 
-        #navbar {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%; 
-            z-index: 1000;
-        }
+#navbar {
+    background-color: #fff; /* White background for navbar */
+    color: #333; /* Dark text color for contrast */
+    text-align: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    z-index: 1000;
+    border-bottom: 1px solid #ddd; /* Light border for navbar */
+}
 
-         .orders-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin: 200px;
-        }
+.orders-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 100px 20px; /* Reduced margin for better spacing */
+}
 
-        .order-box {
-            background-color: #000000; /* Set background to black */
-            color: #fff; /* Set text color to white */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 300px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
+.order-box {
+    background-color: #ffffff; /* White background for order box */
+    color: #333; /* Dark text color for readability */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
-        .order-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
-        }
+.order-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Light shadow effect */
+}
 
-        .order-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 10px;
-        }
+.order-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333; /* Dark text for titles */
+    margin-bottom: 10px;
+}
 
-        .order-description {
-            font-size: 1rem;
-            color: #bbbbbb;
-            margin-bottom: 15px;
-            height: 60px;
-            overflow: hidden;
-        }
+.order-description {
+    font-size: 1rem;
+    color: #666; /* Lighter gray text for descriptions */
+    margin-bottom: 15px;
+    height: 60px;
+    overflow: hidden;
+}
 
-        .order-price {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #ffbf00;
-        }
+.order-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #ffbf00; /* Bright yellow for price */
+}
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+a {
+    text-decoration: none;
+    color: inherit;
+}
 
     </style>
 </head>

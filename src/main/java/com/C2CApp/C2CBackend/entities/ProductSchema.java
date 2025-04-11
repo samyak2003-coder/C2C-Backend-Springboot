@@ -1,6 +1,7 @@
 package com.C2CApp.C2CBackend.entities;
 
 import jakarta.persistence.*;
+
 import java.util.UUID;
 
 @Entity

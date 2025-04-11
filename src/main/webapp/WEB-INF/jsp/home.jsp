@@ -10,72 +10,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C2C Web App</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-        body {
-            background-color: #212121;
-            color: white;
-        }
+body {
+    background-color: #f4f7fc; /* Light background */
+    color: #333; /* Dark text color */
+}
 
-        #navbar {
-            margin-bottom: 20px;
-            background-color: #000000;
-        }
+#navbar {
+    margin-bottom: 20px;
+    background-color: #ffffff; /* White background for navbar */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow */
+}
 
-        .products-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin: 200px;
-        }
+.products-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 50px;
+}
 
-        .product-box {
-            background-color: #000000; /* Set background to black */
-            color: #fff; /* Set text color to white */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 300px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
+.product-box {
+    background-color: #ffffff; /* White background for product boxes */
+    color: #333; /* Dark text for readability */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
-        .product-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
-        }
+.product-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Slightly darker shadow on hover */
+}
 
-        .product-title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: white;
-            margin-bottom: 10px;
-        }
+.product-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333; /* Dark title for visibility */
+    margin-bottom: 10px;
+}
 
-        .product-description {
-            font-size: 1rem;
-            color: #bbbbbb;
-            margin-bottom: 15px;
-            height: 60px;
-            overflow: hidden;
-        }
+.product-description {
+    font-size: 1rem;
+    color: #555; /* Slightly lighter gray for description */
+    margin-bottom: 15px;
+    height: 60px;
+    overflow: hidden;
+}
 
-        .product-price {
-            font-size: 1.25rem;
-            font-weight: bold;
-            color: #ffbf00;
-        }
+.product-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #ffbf00; /* Keep the bright yellow for prices */
+}
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
     </style>
 </head>
 <body>

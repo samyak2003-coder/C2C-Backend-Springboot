@@ -11,140 +11,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C2C Web App</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7fc;
-            margin: 0;
-            padding: 0;
-        }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7fc; /* Light background */
+    margin: 0;
+    padding: 0;
+}
 
-        #navbar {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            position: fixed; /* Fixes the navbar to the top */
-            top: 0;
-            left: 0;
-            width: 100%; 
-            z-index: 1000;
-        }
+#navbar {
+    background-color: #fff; /* White background for navbar */
+    color: #333; /* Dark text color for contrast */
+    text-align: center;
+    position: fixed; /* Fixes the navbar to the top */
+    top: 0;
+    left: 0;
+    width: 100%; 
+    z-index: 1000;
+    border-bottom: 1px solid #ddd; /* Light border for navbar */
+}
 
-        .products-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin: 200px;
-        }
+.products-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 100px 20px; /* Reduced margin for better spacing */
+}
 
-        .offer-box {
-            background-color: #000000; /* Set background to black */
-            color: #fff; /* Set text color to white */
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            width: 300px;
-            text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
+.offer-box {
+    background-color: #ffffff; /* White background for offer box */
+    color: #333; /* Dark text for better contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
-        .offer-box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
+.offer-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Light shadow on hover */
+}
 
-        .offer-box .product-Id,
-        .offer-box .sellerId,
-        .offer-box .offeredPrice,
-        .offer-box .offerDate,
-        .offer-box .stats {
-            font-size: 16px;
-            margin: 10px 0;
-        }
+.offer-box .product-Id,
+.offer-box .sellerId,
+.offer-box .offeredPrice,
+.offer-box .offerDate,
+.offer-box .stats {
+    font-size: 16px;
+    margin: 10px 0;
+}
 
-        .offeredPrice {
-            color: #FF6F00;
-            font-weight: bold;
-        }
+.offeredPrice {
+    color: #FF6F00; /* Bright yellow for price */
+    font-weight: bold;
+}
 
-        .offer-box .offerDate {
-            color: #888;
-        }
+.offer-box .offerDate {
+    color: #888; /* Light gray for offer date */
+}
 
-        .offer-box .stats {
-            background-color: #e0f7fa;
-            padding: 5px;
-            border-radius: 5px;
-        }
+.offer-box .stats {
+    background-color: #e0f7fa; /* Light blue background for stats */
+    padding: 5px;
+    border-radius: 5px;
+}
 
-        .offer-box .stats.active {
-            background-color: #c8e6c9;
-        }
+.offer-box .stats.active {
+    background-color: #c8e6c9; /* Light green for active stats */
+}
 
-        .offer-box .stats.inactive {
-            background-color: #0000FF; /* Set background to red for inactive offers */
-            color: #fff; /* Set text color to white */
-        }
+.offer-box .stats.inactive {
+    background-color: #f44336; /* Red for inactive stats */
+    color: #fff; /* White text for contrast */
+}
 
-        .offer-box .product-Id,
-        .offer-box .sellerId {
-            font-weight: 600;
-        }
+.offer-box .product-Id,
+.offer-box .sellerId {
+    font-weight: 600;
+}
 
-        .offer-box .label {
-            color: #888; /* Grey color for the labels */
-            font-weight: 300; /* Thinner font */
-        }
+.offer-box .label {
+    color: #888; /* Light gray for labels */
+    font-weight: 300; /* Thinner font for labels */
+}
 
-        .offer-box .value {
-            font-weight: 600; /* Regular font weight for the values */
-        }
+.offer-box .value {
+    font-weight: 600; /* Regular font weight for values */
+}
 
-        .offer-box button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            margin-top: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
+.offer-box button {
+    background-color: #4CAF50; /* Green for accept button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
 
-        .offer-box button.reject {
-            background-color: #f44336;
-        }
+.offer-box button.reject {
+    background-color: #f44336; /* Red for reject button */
+}
 
-        .offer-box button:hover {
-            opacity: 0.8;
-        }
+.offer-box button:hover {
+    opacity: 0.8;
+}
 
-        .make-bid-btn {
-            padding: 10px 20px;
-            font-size: 1.2rem;
-            background-color: #2d87f0;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+.make-bid-btn {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background-color: #2d87f0; /* Blue for bid button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
 
-        .make-payment-btn {
-            background-color: #0000FF; /* Same as 'Not accepted' background */
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-top: 5px;
-        }
-        .make-payment-btn:hover {
-            opacity: 0.8;
-        }
+.make-payment-btn {
+    background-color: #0000FF; /* Blue for payment button */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 5px;
+}
 
-        .payment-input {
-            width: 80%; 
-            padding: 5px;
-        }
+.make-payment-btn:hover {
+    opacity: 0.8;
+}
+
+.payment-input {
+    width: 80%; 
+    padding: 5px;
+}
+
     </style>
 </head>
 <body>

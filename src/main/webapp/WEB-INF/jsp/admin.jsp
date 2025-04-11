@@ -11,137 +11,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C2C Web App</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
 
-        body {
-            background-color: #212121;
-            color: white;
-            text-align: center;
-            margin:auto;
-        }
+body {
+    background-color: #f5f5f5; /* Light background */
+    color: #333; /* Dark text for contrast */
+    text-align: center;
+    margin: auto;
+}
 
-    /* Navbar styles */
-    .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #000000;
-        padding: 20px 40px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        margin-top: 0;
-    }
+/* Navbar styles */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff; /* Light background for navbar */
+    padding: 20px 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    margin-top: 0;
+}
 
-    /* Set text color inside navbar to white */
-    .navbar .logo {
-        font-size: 24px;
-        font-weight: bold;
-    }
+/* Set text color inside navbar to dark */
+.navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
 
-    .navbar .search-bar {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        margin: 0 30px;
-    }
+.navbar .search-bar {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin: 0 30px;
+}
 
-    /* Buttons container */
-    .navbar .buttons-container {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
+/* Buttons container */
+.navbar .buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-    /* Buttons style */
-    .navbar .buttons a {
-        padding: 12px 20px;
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #4CAF50;
-        color: white;
-        text-decoration: none;
-        border-radius: 6px;
-        transition: background-color 0.3s ease;
-    }
+/* Buttons style */
+.navbar .buttons a {
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #4CAF50; /* Green background for buttons */
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
 
-    .navbar .buttons a:hover {
-        background-color: #45a049;
-    }
+.navbar .buttons a:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
 
-    /* User name */
-    .navbar .user-name {
-        font-size: 20px;
-        font-weight: bold;
-        margin-left: 15px;
-        white-space: nowrap;
-    }
+/* User name */
+.navbar .user-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 15px;
+    color: #333;
+    white-space: nowrap;
+}
 
+.section-heading {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffbf00; /* Bright yellow for headings */
+    margin-top: 20px;
+}
 
-        .section-heading {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffbf00;
-            margin-top: 20px;
-        }
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 50px;
+}
 
+.box {
+    background-color: #ffffff; /* White background for boxes */
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    overflow: hidden;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    color: #333; /* Dark text */
+}
 
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin: 50px;
-        }
+.box .item {
+    font-size: 1rem;
+    margin: 5px 0;
+    padding: 5px;
+    color: #333; /* Dark text */
+}
 
-        .box {
-            background-color: #000000;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-            padding: 20px;
-            text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            color: white;
-        }
+.delete-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #f44336; /* Red background for delete button */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        .box .item {
-            font-size: 1rem;
-            margin: 5px 0;
-            padding: 5px;
-            color: white;
-        }
-        .delete-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            background-color: #f44336;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+.delete-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
 
-        .delete-button:hover {
-            background-color: #d32f2f;
-        }
-        .box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
-        }
+.box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* Lighter shadow on hover */
+}
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-    </style>
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+    </style>    
 </head>
 <body>
 

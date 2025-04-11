@@ -1,0 +1,55 @@
+Design patterns
+
+Repository Folder
+Pattern: Factory Method / Proxy
+Why?
+Spring Data JPA repositories act as Factory Methods since they dynamically create implementations at runtime.
+They also follow the Proxy pattern by acting as an interface to interact with the database while hiding the implementation details.
+
+Service Folder
+Pattern: Singleton / Facade
+Why?
+Spring manages service classes as Singletons (by default) to ensure a single instance per application context.
+Services also act as a Facade, abstracting complex repository interactions and exposing simple methods for controllers.
+
+
+Config Folder
+Pattern: Singleton / Factory
+Why?
+Configuration classes in Spring Boot are managed as Singletons, meaning only one instance exists in the application context.
+@Bean methods inside these classes follow the Factory Method pattern, as they instantiate and provide dependencies when needed.
+
+Controller Folder
+Pattern: Controller (MVC) / Strategy
+Why?
+Controllers in Spring Boot follow the Model-View-Controller (MVC) pattern, which isn't listed in your image but is a core design pattern.
+They also align with the Strategy pattern because different controller methods handle different request strategies dynamically.
+
+
+Entities (Entities like OfferSchema, OrderSchema)
+Pattern: Prototype
+Why?
+Entities represent database records and are often cloned or copied for persistence operations, fitting the Prototype pattern.
+
+DTOs Folder (DTOs like CreateOrderDto)
+Pattern: Builder / DTO (Data Transfer Object - a pattern itself)
+Why?
+DTOs are used to transfer data between layers efficiently and often use the Builder pattern when complex object creation is needed.
+
+
+Architectural patterns
+
+1. Model-View-Controller (MVC)
+Spring Boot + JSP naturally follows MVC, where:
+Model → Represents the data layer (Entities, DTOs, and Repositories).
+View → JSP files for rendering the UI.
+Controller → Spring Boot controllers handle HTTP requests and direct responses.
+
+2. Layered Architecture (3-Tier Architecture)
+Your application also follows a Layered Architecture (a type of N-tier architecture), which is commonly used in Spring Boot applications:
+Presentation Layer (View Layer) → JSP + Controllers
+Handles user requests and displays data.
+Service Layer (Business Logic Layer) → Service Classes
+Contains business logic and interacts with repositories.
+Data Access Layer → Repositories & Database
+Manages persistence using Spring Data JPA.

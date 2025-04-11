@@ -27,6 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
+//Singleton pattern
 @Controller
 public class AuthController {
 

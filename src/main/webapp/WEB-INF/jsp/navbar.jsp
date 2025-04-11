@@ -9,69 +9,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C2C Web App</title>
 <style>
-    /* Set body background color */
-    body {
-        background-color: #212121;
-        color: white;
-        margin-top: 0;
-    }
+ /* Set body background color */
+body {
+    background-color: #f4f7fc; /* Light background */
+    color: #333; /* Dark text for readability */
+    margin-top: 0;
+}
 
-    /* Navbar styles */
-    .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background-color: #000000;
-        padding: 20px 40px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        margin-top: 0;
-    }
+/* Navbar styles */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff; /* White background for navbar */
+    padding: 20px 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Lighter shadow */
+    margin-top: 0;
+}
 
-    /* Set text color inside navbar to white */
-    .navbar .logo {
-        font-size: 24px;
-        font-weight: bold;
-    }
+/* Set text color inside navbar to dark */
+.navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333; /* Dark color for the logo */
+}
 
-    .navbar .search-bar {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        margin: 0 30px;
-    }
-    /* Buttons container */
-    .navbar .buttons-container {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
+.navbar .search-bar {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin: 0 30px;
+}
 
-    /* Buttons style */
-    .navbar .buttons a {
-        padding: 12px 20px;
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #4CAF50;
-        color: white;
-        text-decoration: none;
-        border-radius: 6px;
-        transition: background-color 0.3s ease;
-    }
+/* Buttons container */
+.navbar .buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
-    .navbar .buttons a:hover {
-        background-color: #45a049;
-    }
+/* Buttons style */
+.navbar .buttons a {
+    padding: 12px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #4CAF50; /* Green background for buttons */
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
 
-    /* User name */
-    .navbar .user-name {
-        font-size: 20px;
-        font-weight: bold;
-        margin-left: 15px;
-        white-space: nowrap;
-    }
+.navbar .buttons a:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* User name */
+.navbar .user-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 15px;
+    white-space: nowrap;
+    color: #333; /* Dark text for the user name */
+}
+
 </style>
 </head>
 <body>

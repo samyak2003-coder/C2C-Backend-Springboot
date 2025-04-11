@@ -11,7 +11,7 @@
     <title>C2C Web App</title>
     <style>
 
-         * {
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -19,32 +19,32 @@
         }
 
         body {
-            background-color: #f4f7fc;
+            background-color: #ffffff; /* Changed to white */
+            color: #000000; /* Changed to black */
         }
 
         /* Styling for the product detail box */
         .product-detail {
-            background-color: #000000; /* Changed to black */
+            background-color: #f9f9f9; /* Light gray for contrast */
             border-radius: 10px;
             padding: 30px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             margin: 40px auto;
             max-width: 900px;
             text-align: left;
-            font-family: Arial, sans-serif;
-            color: #ffffff; /* Changed text color to white */
+            color: #000000; /* Black text */
         }
 
         .product-title {
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 20px;
-            color: #ffffff; /* Changed to white */
+            color: #000000; /* Black title */
         }
 
         .product-description {
             font-size: 1.1rem;
-            color: #dcdcdc; /* Light gray for better readability */
+            color: #333333; /* Dark gray for readability */
             margin-bottom: 20px;
             line-height: 1.6;
         }
@@ -52,19 +52,19 @@
         .product-price {
             font-size: 1.75rem;
             font-weight: bold;
-            color: #2d87f0;
+            color: #007bff; /* Blue for price */
             margin-bottom: 20px;
         }
 
         .product-category, .product-condition, .product-seller, .product-status {
             font-size: 1.2rem;
-            color: #dcdcdc; /* Light gray for better contrast */
+            color: #555555; /* Medium gray for contrast */
             margin-bottom: 10px;
         }
 
         .product-category span, .product-condition span, .product-seller span, .product-status span {
             font-weight: bold;
-            color: #ffffff; /* Changed labels to white */
+            color: #000000; /* Black for labels */
         }
 
         /* Additional styles for better layout */
@@ -80,19 +80,19 @@
             display: inline-block;
             margin-top: 20px;
             font-size: 1.2rem;
-            color: #2d87f0;
+            color: #007bff;
             text-decoration: none;
-            border: 2px solid #2d87f0;
+            border: 2px solid #007bff;
             padding: 10px 20px;
             border-radius: 5px;
         }
 
         .back-link:hover {
-            background-color: #2d87f0;
+            background-color: #007bff;
             color: white;
         }
 
-               .bid-section {
+        .bid-section {
             display: flex;
             align-items: center;
             margin-top: 20px;
@@ -105,12 +105,14 @@
             border: 1px solid #ccc;
             margin-right: 10px;
             width: 200px;
+            background-color: #ffffff; /* White input background */
+            color: #000000; /* Black text */
         }
 
         .make-bid-btn {
             padding: 10px 20px;
             font-size: 1.2rem;
-            background-color: #2d87f0;
+            background-color: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
@@ -118,8 +120,9 @@
         }
 
         .make-bid-btn:hover {
-            background-color: #1e66c1;
+            background-color: #0056b3;
         }
+
     </style>
 </head>
 <body>

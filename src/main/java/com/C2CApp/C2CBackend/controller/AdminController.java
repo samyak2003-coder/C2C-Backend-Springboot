@@ -20,6 +20,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
+
+//Singleton pattern
 @Controller
 public class AdminController {
     private final UserService userService;

@@ -6,135 +6,130 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>C2C Web App</title>
-    <style>
+<style>
 
     body {
-    background-color: #f4f7fc;
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text:white;
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+        background-color: #ffffff; /* Changed to white */
+        color: #000000; /* Changed to black */
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column; 
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-#navbar {
-    width: 100%;
-    position: fixed; 
-    top: 0;
-    left: 0;
-    background-color: #333;
-    text-align: center;
-}
+    #navbar {
+        width: 100%;
+        position: fixed; 
+        top: 0;
+        left: 0;
+        background-color: #f8f9fa; /* Light gray navbar */
+        text-align: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
 
-h1 {
-    text-align: center;
-    color: white;
-}
+    h1 {
+        text-align: center;
+        color: #000000; /* Changed to black */
+    }
 
+    .form-container {
+        background-color: #f9f9f9; /* Light gray for contrast */
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .form-container {
-            background-color: #000000;
-            position: fixed;
-            padding: 50px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            align-items: center;
-            justify-content: center;
-        }
+    .form-group {
+        margin-bottom: 15px;
+    }
 
-        .form-container div {
-            margin-bottom: 15px;
-        }
+    .form-container label {
+        font-size: 14px;
+        color: #333; /* Dark gray for readability */
+        display: block;
+        margin-bottom: 5px;
+    }
 
-        .form-container label {
-            font-size: 14px;
-            color: #555;
-            display: block;
-            margin-bottom: 5px;
-        }
+    .form-container input {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+        background-color: #ffffff; /* White input fields */
+        color: #000000;
+    }
 
-        .form-container input {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            outline: none;
-        }
+    .form-container input:focus {
+        border-color: #4CAF50;
+    }
 
-        .form-container label {
-    font-size: 14px;
-    color: white; /* Changed from #555 to white */
-    display: block;
-    margin-bottom: 5px;
-}
+    .form-container button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
 
-        .form-container input:focus {
-            border-color: white;
-        }
+    .form-container button:hover {
+        background-color: #45a049;
+    }
 
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+    .form-container button:focus {
+        outline: none;
+    }
 
-        .form-container button:hover {
-            background-color: #45a049;
-        }
+    .form-container p {
+        text-align: center;
+        color: #000000; /* Changed to black */
+        margin-top: 15px;
+        font-size: 14px;
+    }
 
-        .form-container button:focus {
-            outline: none;
-        }
+    .form-container p a {
+        color: #4CAF50;
+        text-decoration: none;
+    }
 
-        .form-container p {
-            text-align: center;
-            color: white;
-            margin-top: 15px;
-            font-size: 14px;
-        }
+    .form-container p a:hover {
+        text-decoration: underline;
+    }
 
-        .form-container p a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
+    .alert {
+        padding: 10px;
+        border-radius: 5px;
+        margin-top: 10px;
+        text-align: center;
+        font-size: 14px;
+    }
 
-        .form-container p a:hover {
-            text-decoration: underline;
-        }
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
 
-        .alert {
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
+    .alert-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
 
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
     </style>
 </head>
 <body>
