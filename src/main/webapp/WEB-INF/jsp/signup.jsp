@@ -1,142 +1,131 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C2C Web App</title>
+    <title>C2C Web App - Sign Up</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/apiCaller.js"></script>
+
     <style>
-
     body {
-    background-color: #f4f7fc;
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text:white;
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-#navbar {
-    width: 100%;
-    position: fixed; 
-    top: 0;
-    left: 0;
-    background-color: #333;
-    text-align: center;
-}
+    /* Auth form layout */
+    .form-container {
+        width: 1000px;
+        padding: 40px;
+        background-color: var(--surface-dark);
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-h1 {
-    text-align: center;
-    color: white;
-}
+    .form-container h1 {
+        text-align: center;
+        color: var(--text-light);
+        font-size: 2rem;
+        margin-bottom: var(--spacing-lg);
+        font-weight: bold;
+    }
 
+    /* Form groups */
+    .form-group {
+        margin-bottom: var(--spacing-md);
+    }
 
+    .form-group label {
+        display: block;
+        margin-bottom: var(--spacing-xs);
+        color: var(--text-light);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    /* Form controls */
+    .form-control {
+        width: 100%;
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--border-radius-md);
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        font-size: 1rem;
+        transition: all var(--transition-speed);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Button styles */
+    .btn {
+        width: 100%;
+        padding: var(--spacing-md);
+        margin-top: var(--spacing-md);
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: var(--accent-color);
+    }
+
+    .btn:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+    }
+
+    /* Sign in link */
+    .signin-link {
+        display: block;
+        text-align: center;
+        margin-top: var(--spacing-lg);
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color var(--transition-speed);
+    }
+
+    .signin-link:hover {
+        color: var(--accent-color);
+    }
+
+    /* Error message */
+    .alert-danger {
+        background-color: rgba(255, 68, 68, 0.15);
+        border: 1px solid rgba(255, 68, 68, 0.2);
+        color: var(--error-color);
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius-md);
+        margin-top: var(--spacing-md);
+        font-size: 0.9rem;
+        display: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
         .form-container {
-            background-color: #000000;
-            position: fixed;
-            padding: 50px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            align-items: center;
-            justify-content: center;
+            width: 90%;
+            padding: 20px;
         }
 
-        .form-container div {
-            margin-bottom: 15px;
+        .form-container h1 {
+            font-size: 1.75rem;
         }
 
-        .form-container label {
-            font-size: 14px;
-            color: #555;
-            display: block;
-            margin-bottom: 5px;
+        .btn {
+            padding: var(--spacing-sm);
+            font-size: 1rem;
         }
-
-        .form-container input {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            outline: none;
-        }
-
-        .form-container label {
-    font-size: 14px;
-    color: white; /* Changed from #555 to white */
-    display: block;
-    margin-bottom: 5px;
-}
-
-        .form-container input:focus {
-            border-color: white;
-        }
-
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .form-container button:hover {
-            background-color: #45a049;
-        }
-
-        .form-container button:focus {
-            outline: none;
-        }
-
-        .form-container p {
-            text-align: center;
-            color: white;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .form-container p a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
-
-        .form-container p a:hover {
-            text-decoration: underline;
-        }
-
-        .alert {
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
+    }
     </style>
 </head>
 <body>
@@ -144,43 +133,64 @@ h1 {
 
 <div class="form-container">
     <h1>Sign Up</h1>
-
-    <form:form method="POST" action="/signup" modelAttribute="signUpDetails">
+    <form id="signupForm" onsubmit="handleSignup(event)">
         <div class="form-group">
             <label for="email">E-Mail</label>
-            <form:input id="email" path="email" cssClass="form-control"/>
-            <form:errors path="email" cssStyle="color: red"/>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required/>
         </div>
 
         <div class="form-group">
             <label for="name">Name</label>
-            <form:input id="name" path="name" cssClass="form-control"/>
-            <form:errors path="name" cssStyle="color: red"/>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required/>
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
-            <form:password id="password" path="password"/>
-            <form:errors path="password" cssStyle="color: red"/>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Choose a password" required/>
         </div>
 
-        <form:button cssClass="btn btn-primary">Sign Up</form:button>
-    </form:form>
+        <div class="form-group">
+            <label for="role">Role</label>
+            <select id="role" name="role" class="form-control" required>
+                <option value="USER">User</option>
+                <option value="ADMIN">Admin</option>
+            </select>
+        </div>
 
-    <!--- Check login status and display message -->
-<% Object status = session.getAttribute("AuthStatus"); %>
-<% if (status != null) { %>
-    <% if ("FAILED".equals(status)) { %>
-        <div class="alert alert-danger">
-            Signup failed. Please try again!!!
-        </div>
-    <% } else if ("USER_EXISTS".equals(status)) { %>
-        <div class="alert alert-warning">
-            This email is already registered. Try logging in instead!
-        </div>
-    <% } %>
-<% } %>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+        <div id="error-message" class="alert alert-danger"></div>
+    </form>
+
+    <a href="/signin" class="signin-link">Already have an account? Sign in here</a>
 </div>
 
+<script>
+async function handleSignup(event) {
+    event.preventDefault();
+    const errorDiv = document.getElementById('error-message');
+    errorDiv.style.display = 'none';
+
+    try {
+        const response = await apiCaller.post('/api/auth/signup', {
+            email: document.getElementById('email').value,
+            name: document.getElementById('name').value,
+            password: document.getElementById('password').value,
+            role: document.getElementById('role').value
+        });
+
+        if (response.success) {
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            window.location.href = '/';
+        } else {
+            throw new Error(response.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        errorDiv.textContent = error.message;
+        errorDiv.style.display = 'block';
+    }
+}
+</script>
 </body>
 </html>

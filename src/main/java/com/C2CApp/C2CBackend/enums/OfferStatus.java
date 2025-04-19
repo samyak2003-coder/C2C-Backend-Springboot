@@ -25,8 +25,12 @@ public enum OfferStatus {
         throw new IllegalArgumentException("No constant with text " + text + " found");
     }
 
+    public String getDisplayStatus() {
+        return status;
+    }
+
     @Override
     public String toString() {
-        return status;
+        return name();
     }
 }

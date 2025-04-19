@@ -1,140 +1,116 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C2C Web App</title>
+    <title>C2C Web App - Admin Login</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/apiCaller.js"></script>
+
     <style>
+    /* Auth form layout */
+    .form-container {
+        max-width: 400px;
+        margin: 80px auto 0;
+        padding: var(--spacing-lg);
+        background-color: var(--surface-dark);
+        border-radius: var(--border-radius-lg);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--primary-color);
+    }
 
-    body {
-    background-color: #f4f7fc;
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    text:white;
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
+    .form-container h1 {
+        text-align: center;
+        color: var(--text-light);
+        font-size: 2rem;
+        margin-bottom: var(--spacing-lg);
+        font-weight: bold;
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: var(--spacing-sm);
+    }
 
-#navbar {
-    width: 100%;
-    position: fixed; 
-    top: 0;
-    left: 0;
-    background-color: #333;
-    text-align: center;
-}
+    /* Form groups */
+    .form-group {
+        margin-bottom: var(--spacing-md);
+    }
 
-h1 {
-    text-align: center;
-    color: white;
-}
+    .form-group label {
+        display: block;
+        margin-bottom: var(--spacing-xs);
+        color: var(--text-light);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
 
+    /* Form controls */
+    .form-control {
+        width: 100%;
+        padding: var(--spacing-sm);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--border-radius-md);
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        font-size: 1rem;
+        transition: all var(--transition-speed);
+    }
 
+    .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(45, 135, 240, 0.2);
+    }
+
+    /* Admin button styles */
+    .btn {
+        width: 100%;
+        padding: var(--spacing-md);
+        margin-top: var(--spacing-md);
+        font-size: 1.1rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background: var(--primary-color);
+        color: var(--text-light);
+        border: none;
+        border-radius: var(--border-radius-md);
+        cursor: pointer;
+        transition: all var(--transition-speed);
+    }
+
+    .btn:hover {
+        background: var(--primary-hover);
+        transform: translateY(-2px);
+    }
+
+    /* Error message */
+    .alert-danger {
+        background-color: rgba(255, 68, 68, 0.15);
+        border: 1px solid rgba(255, 68, 68, 0.2);
+        color: var(--error-color);
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius-md);
+        margin-top: var(--spacing-md);
+        font-size: 0.9rem;
+        display: none;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
         .form-container {
-            background-color: #000000;
-            position: fixed;
-            padding: 50px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            align-items: center;
-            justify-content: center;
+            margin: 60px var(--spacing-sm) 0;
+            padding: var(--spacing-md);
         }
 
-        .form-container div {
-            margin-bottom: 15px;
+        .form-container h1 {
+            font-size: 1.75rem;
         }
 
-        .form-container label {
-            font-size: 14px;
-            color: #555;
-            display: block;
-            margin-bottom: 5px;
+        .btn {
+            padding: var(--spacing-sm);
+            font-size: 1rem;
         }
-
-        .form-container input {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            outline: none;
-        }
-
-        .form-container label {
-    font-size: 14px;
-    color: white; /* Changed from #555 to white */
-    display: block;
-    margin-bottom: 5px;
-}
-
-        .form-container input:focus {
-            border-color: white;
-        }
-
-        .form-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .form-container button:hover {
-            background-color: #45a049;
-        }
-
-        .form-container button:focus {
-            outline: none;
-        }
-
-        .form-container p {
-            text-align: center;
-            color: white;
-            margin-top: 15px;
-            font-size: 14px;
-        }
-
-        .form-container p a {
-            color: #4CAF50;
-            text-decoration: none;
-        }
-
-        .form-container p a:hover {
-            text-decoration: underline;
-        }
-
-        .alert {
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+    }
     </style>
 </head>
 <body>
@@ -142,31 +118,67 @@ h1 {
 
 <div class="form-container">
     <h1>Admin Sign In</h1>
-
-    <form:form method="POST" action="/signin" modelAttribute="signInDetails">
+    <form id="loginForm" onsubmit="handleAdminLogin(event)">
         <div class="form-group">
             <label for="email">E-Mail</label>
-            <form:input path="email" cssClass="form-control"/>
-            <form:errors path="email" cssStyle="color: red"/>
+            <input type="email" id="email" class="form-control" placeholder="Enter admin email" required/>
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
-            <form:password path="password" cssClass="form-control"/>
-            <form:errors path="password" cssStyle="color: red"/>
+            <input type="password" id="password" class="form-control" placeholder="Enter admin password" required/>
         </div>
 
-        <form:button cssClass="btn btn-primary">Log in</form:button>
-    </form:form>
-
-    <!--- Check login status and display message -->
-    <% Object status = session.getAttribute("AuthStatus"); %>
-    <% if ("FAILED".equals(status)) { %>
-        <div class="alert alert-danger">
-            Login failed. Please try again!!!
-        </div>
-    <% } %>
+        <button type="submit" class="btn">Log in as Admin</button>
+        <div id="error-message" class="alert alert-danger"></div>
+    </form>
 </div>
 
+<script>
+async function handleAdminLogin(event) {
+    event.preventDefault();
+    const errorDiv = document.getElementById('error-message');
+    errorDiv.style.display = 'none';
+
+    try {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        const response = await apiCaller.post('/api/auth/signin', { email, password });
+
+        if (!response.success) {
+            throw new Error(response.message);
+        }
+        
+        const user = response.data.user;
+        if (user.role !== 'ADMIN') {
+            throw new Error('Access denied. Admin privileges required.');
+        }
+        
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(user));
+        window.location.href = '/admin';
+    } catch (error) {
+        console.error('Error:', error);
+        errorDiv.textContent = error.message;
+        errorDiv.style.display = 'block';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            if (user.role === 'ADMIN') {
+                window.location.href = '/admin';
+            }
+        }
+    } catch (error) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+    }
+});
+</script>
 </body>
 </html>

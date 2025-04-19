@@ -4,8 +4,6 @@ import com.C2CApp.C2CBackend.repositories.UserRepository;
 import com.C2CApp.C2CBackend.schema.UserSchema;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -18,9 +16,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserSchema> getAllUsers() {
@@ -36,35 +34,32 @@ public class UserService {
     }
 
     public void createUser(UserSchema user) {
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        } else {
-            user.setPassword("");
-        }
         userRepository.save(user);
     }
 
-    public void updateUser(String Id, UserSchema user) {
-        Optional<UserSchema> userOptional = userRepository.findById(Id);
-        try{
-            if (userOptional.isPresent()) {
-                UserSchema updatedUser = userOptional.get();
-                updatedUser.setName(user.getName());
-                updatedUser.setEmail(user.getEmail());
-                updatedUser.setPassword(user.getPassword());
-                userRepository.save(updatedUser);
-            }
-        } catch (ObjectOptimisticLockingFailureException e) {
-        throw new Error("The record has been modified by another transaction. Please try again.");
-    }
+    public void updateUser(String id, UserSchema user) {
+        user.setId(id);
+        userRepository.save(user);
     }
 
     public boolean checkPassword(String email, String password) {
         UserSchema user = userRepository.findByEmail(email);
+        if (user == null || password == null) {
+            return false;
+        }
         return passwordEncoder.matches(password, user.getPassword());
     }
 
     public void deleteUser(String userId) {
         userRepository.deleteById(userId);
+    }
+
+    public boolean isAdmin(String userId) {
+        Optional<UserSchema> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            UserSchema user = userOptional.get();
+            return "ADMIN".equals(user.getRole()); 
+        }
+        return false;
     }
 }

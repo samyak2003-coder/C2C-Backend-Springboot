@@ -1,15 +1,20 @@
 package com.C2CApp.C2CBackend.schema;
 
+import com.C2CApp.C2CBackend.enums.ProductStatus;
 import jakarta.persistence.*;
 import java.util.UUID;
+import java.util.Date;
 
 @Entity
 @Table(name = "products")
 public class ProductSchema {
     
     @Id
-    @Column(nullable = false)
-    private String productId;
+    @Column(name = "product_id", nullable = false)
+    private String id;
+
+    @Column(name = "created_date", nullable = false)
+    private Date createdDate;
 
     @Column(nullable = false)
     private String title;
@@ -29,31 +34,103 @@ public class ProductSchema {
     @Column(nullable = false)
     private String sellerId;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status = "Unsold";
+    private ProductStatus status;
 
+    // public constructor for JPA
     public ProductSchema() {
-        this.productId = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
+        this.status = ProductStatus.AVAILABLE;
+        this.createdDate = new Date();
     }
 
-    public ProductSchema(String title, String description, double price, String category, String productCondition, String sellerId, String status) {
-        this.productId = UUID.randomUUID().toString();
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.category = category;
-        this.productCondition = productCondition; 
-        this.sellerId = sellerId;
-        this.status = status;
+    // Builder class
+    public static class Builder {
+        private String title;
+        private String description;
+        private double price;
+        private String category;
+        private String productCondition;
+        private String sellerId;
+        private ProductStatus status = ProductStatus.AVAILABLE; // Default
+
+        public Builder title(String title) { 
+            this.title = title; 
+            return this; 
+        }
+
+        public Builder description(String description) { 
+            this.description = description; 
+            return this; 
+        }
+
+        public Builder price(double price) { 
+            this.price = price; 
+            return this; 
+        }
+
+        public Builder category(String category) { 
+            this.category = category; 
+            return this; 
+        }
+
+        public Builder productCondition(String condition) { 
+            this.productCondition = condition; 
+            return this; 
+        }
+
+        public Builder sellerId(String sellerId) { 
+            this.sellerId = sellerId; 
+            return this; 
+        }
+
+        public Builder status(ProductStatus status) { 
+            this.status = status; 
+            return this; 
+        }
+
+        public ProductSchema build() {
+            validateFields();
+            ProductSchema product = new ProductSchema();
+            product.setTitle(this.title);
+            product.setDescription(this.description);
+            product.setPrice(this.price);
+            product.setCategory(this.category);
+            product.setProductCondition(this.productCondition);
+            product.setSellerId(this.sellerId);
+            product.setStatus(this.status);
+            return product;
+        }
+
+        private void validateFields() {
+            if (title == null || title.isBlank()) 
+                throw new IllegalStateException("Title is required");
+            if (description == null || description.isBlank()) 
+                throw new IllegalStateException("Description is required");
+            if (price <= 0) 
+                throw new IllegalStateException("Price must be positive");
+            if (category == null || category.isBlank()) 
+                throw new IllegalStateException("Category is required");
+            if (productCondition == null || productCondition.isBlank()) 
+                throw new IllegalStateException("Product condition is required");
+            if (sellerId == null || sellerId.isBlank()) 
+                throw new IllegalStateException("Seller ID is required");
+        }
     }
 
-    // Getters and Setters
-    public String getProductId() {
-        return productId;
+    // Static method to create a new Builder instance
+    public static Builder builder() {
+        return new Builder();
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    // Getters and Setters needed by JPA
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -92,7 +169,7 @@ public class ProductSchema {
         return productCondition;
     }
 
-    public void setProductCondition(String productCondition) { // Fixed setter parameter
+    public void setProductCondition(String productCondition) {
         this.productCondition = productCondition;
     }
 
@@ -104,11 +181,53 @@ public class ProductSchema {
         this.sellerId = sellerId;
     }
 
-    public String getStatus() {
+    public ProductStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ProductStatus status) {
         this.status = status;
+    }
+
+    // Business methods
+    public void markAsSold() {
+        this.status = ProductStatus.SOLD;
+    }
+
+    public void markAsReserved() {
+        this.status = ProductStatus.RESERVED;
+    }
+
+    public void markAsAvailable() {
+        this.status = ProductStatus.AVAILABLE;
+    }
+
+    public void remove() {
+        this.status = ProductStatus.REMOVED;
+    }
+
+    public boolean isAvailable() {
+        return this.status == ProductStatus.AVAILABLE;
+    }
+
+    public boolean isSold() {
+        return this.status == ProductStatus.SOLD;
+    }
+
+    // For backwards compatibility with string-based status
+    public String getStatusString() {
+        return status.toString();
+    }
+
+    public void setStatusString(String statusStr) {
+        this.status = ProductStatus.fromString(statusStr);
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

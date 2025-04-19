@@ -3,115 +3,102 @@ package com.C2CApp.C2CBackend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.C2CApp.C2CBackend.dto.OfferWithProductDto;
-import com.C2CApp.C2CBackend.entities.UpdateOfferInput;
+import com.C2CApp.C2CBackend.dto.offer.get.GetOfferResponse;
+import com.C2CApp.C2CBackend.mapper.OfferMapper;
+import com.C2CApp.C2CBackend.exceptions.BusinessException;
 import com.C2CApp.C2CBackend.repositories.OfferRepository;
 import com.C2CApp.C2CBackend.schema.OfferSchema;
 import com.C2CApp.C2CBackend.schema.ProductSchema;
+import com.C2CApp.C2CBackend.services.interfaces.IOfferService;
+import com.C2CApp.C2CBackend.enums.OfferStatus;
+import com.C2CApp.C2CBackend.services.interfaces.IProductOfferFacade;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class OfferService {
+public class OfferService implements IOfferService {
     private final OfferRepository offerRepository;
-    private final ProductService productService;
+    private final IProductOfferFacade productOfferFacade;
 
     @Autowired
-    public OfferService(OfferRepository offerRepository, ProductService productService) {
+    public OfferService(OfferRepository offerRepository, IProductOfferFacade productOfferFacade) {
         this.offerRepository = offerRepository;
-        this.productService = productService;
+        this.productOfferFacade = productOfferFacade;
     }
 
     public List<OfferSchema> getAllOffers() {
         return offerRepository.findAll();
     }
 
-    public Optional<OfferSchema> getOfferById(String offerId){
-        return offerRepository.findByOfferId(offerId);
+    public Optional<OfferSchema> getOfferById(String offerId) {
+        return offerRepository.findById(offerId);
     }
 
-
-    public List<OfferWithProductDto> getOfferByBuyerId(String buyerId) {
-        List<OfferSchema> offers = offerRepository.findByBuyerIdCustom(buyerId);
-        return offers.stream().map(offer -> {
-            ProductSchema product = productService.getByProductId(offer.getProductId()).orElse(null);
-            return new OfferWithProductDto(offer, 
-                product != null ? product.getStatus() : "Unknown",
-                product != null ? product.getTitle() : "Unknown");
-        }).collect(java.util.stream.Collectors.toList());
+    public List<GetOfferResponse> getOfferByBuyerId(String buyerId) {
+        List<OfferSchema> offers = offerRepository.findByBuyerId(buyerId);
+        return mapOffersToResponses(offers);
     }
 
-    public List<OfferWithProductDto> getOfferBySellerId(String sellerId) {
-        List<OfferSchema> offers = offerRepository.findBySellerIdCustom(sellerId);
-        return offers.stream().map(offer -> {
-            ProductSchema product = productService.getByProductId(offer.getProductId()).orElse(null);
-            return new OfferWithProductDto(offer, 
-                product != null ? product.getStatus() : "Unknown",
-                product != null ? product.getTitle() : "Unknown");
-        }).collect(java.util.stream.Collectors.toList());
+    public List<GetOfferResponse> getOfferBySellerId(String sellerId) {
+        List<OfferSchema> offers = offerRepository.findBySellerId(sellerId);
+        return mapOffersToResponses(offers);
     }
 
-    public boolean createOffer(OfferSchema offer){
+    public List<GetOfferResponse> getOffersByProductId(String productId) {
+        List<OfferSchema> offers = offerRepository.findByProductId(productId);
+        return mapOffersToResponses(offers);
+    }
+
+    // New method to get raw offers without product enrichment
+    public List<OfferSchema> findOffersByProductIdRaw(String productId) {
+        return offerRepository.findByProductId(productId);
+    }
+
+    private List<GetOfferResponse> mapOffersToResponses(List<OfferSchema> offers) {
+        return offers.stream()
+            .map(offer -> {
+                ProductSchema product = productOfferFacade.findProductById(offer.getProductId()).orElse(null);
+                return OfferMapper.toGetResponse(offer, product);
+            })
+            .collect(java.util.stream.Collectors.toList());
+    }
+
+    public OfferSchema createOffer(OfferSchema offer) {
         // Validate offer price is positive
-        if (offer.getOfferedPrice() <= 0) {
-            return false;
+        if (offer.getPrice() <= 0) {
+            throw new BusinessException("Offer price must be greater than zero");
         }
 
         // Check if product exists and is available
-        Optional<ProductSchema> product = productService.getByProductId(offer.getProductId());
-        if (product.isEmpty() || "Sold".equals(product.get().getStatus())) {
-            return false;
-        }
+        productOfferFacade.validateProductAvailabilityForOffer(offer.getProductId());
 
         // Save the offer
-        offerRepository.save(offer);
-        return true;
+        return offerRepository.save(offer);
     }
 
-    public boolean updateOffer(String offerId, OfferSchema offer){
-        Optional<OfferSchema> offerOptional = offerRepository.findById(offerId);
-        if(offerOptional.isPresent()){
-            OfferSchema updatedOffer = offerOptional.get();
-            updatedOffer.setOfferedPrice(offer.getOfferedPrice());
-            updatedOffer.setOfferDate(offer.getOfferDate());
-            updatedOffer.setStatus(offer.getStatus());
-            offerRepository.save(updatedOffer);
-            return true;
+    public void deleteOfferById(String offerId) {
+        offerRepository.deleteById(offerId);
+    }
+
+    @Override
+    public OfferSchema updateOfferStatus(String offerId, OfferStatus status) {
+        Optional<OfferSchema> offerOpt = offerRepository.findById(offerId);
+        if (offerOpt.isEmpty()) {
+            throw new BusinessException("Offer not found");
         }
-        return false;
+    
+        OfferSchema offer = offerOpt.get();
+        
+        // Only update the status in the repository
+        offerRepository.updateStatus(offerId, status);
+        offer.setStatus(status);  // Update the local object's status
+        
+        return offer;
     }
 
-    public void deleteOfferById(String offerId){
-        offerRepository.deleteByOfferId(offerId);
-    }
-
-    public void updateOfferStatus(String offerId, String status) {
-        Optional<OfferSchema> offerOpt = offerRepository.findByOfferId(offerId);
-        if (offerOpt.isPresent()) {
-            OfferSchema offer = offerOpt.get();
-            offerRepository.updateOfferStatus(offerId, status);
-            // Update product status when offer is accepted
-            if (status.equals("Accepted")) {
-                String productId = offer.getProductId();
-                System.out.println("Updating offer status to Accepted for offerId: " + offerId);
-                System.out.println("Attempting to update product status for productId: " + productId);
-                
-                productService.getByProductId(productId)
-                    .ifPresent(product -> {
-                        System.out.println("Found product: " + productId + ", current status: " + product.getStatus());
-                        product.setStatus("Sold");
-                        productService.updateProduct(product.getProductId(), product);
-                        System.out.println("Updated product status to Sold");
-                        // Reject all other pending offers for this product
-                        rejectAllPendingOffersForProduct(productId);
-                        System.out.println("Rejected all other pending offers for product: " + productId);
-                    });
-            }
-        }
-    }
-
-    public void rejectAllPendingOffersForProduct(String productId) {
-        offerRepository.rejectAllPendingOffers(productId);
+    @Override
+    public void rejectAllPendingOffersForProduct(String productId, String excludeOfferId) {
+        offerRepository.rejectAllPendingOffers(productId, OfferStatus.REJECTED, OfferStatus.PENDING, excludeOfferId);
     }
 }

@@ -1,364 +1,340 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="java.io.*, java.net.HttpURLConnection, java.net.URL" %>
-<%@ page import="org.json.JSONObject" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-<%@ page import="org.json.JSONArray" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>C2C Web App</title>
+    <title>C2C Web App - Admin Panel</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="/js/apiCaller.js"></script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+    /* Admin panel layout */
+    #admin-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: var(--spacing-lg);
+    }
 
-        body {
-            background-color: #212121;
-            color: white;
-            text-align: center;
-            margin:auto;
-        }
+    .section-heading {
+        color: var(--text-light);
+        font-size: 1.8rem;
+        margin: var(--spacing-xl) 0 var(--spacing-lg);
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: var(--spacing-sm);
+    }
 
-    /* Navbar styles */
+    /* Container styles */
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: var(--spacing-md);
+    }
+
+    /* Box styles */
+    .box {
+        background-color: var(--surface-dark);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--border-radius-lg);
+        padding: var(--spacing-lg);
+        transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        position: relative;
+    }
+
+    .box:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Item styles */
+    .item {
+        margin-bottom: var(--spacing-sm);
+        font-size: 0.95rem;
+        color: var(--text-light);
+        line-height: 1.5;
+    }
+
+    .item:first-child {
+        color: var(--primary-color);
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: var(--spacing-md);
+    }
+
+    /* Admin navbar */
     .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
+        background-color: var(--surface-dark);
+        padding: var(--spacing-md) var(--spacing-lg);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #000000;
-        padding: 20px 40px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        margin-top: 0;
+        border-bottom: 2px solid var(--primary-color);
     }
 
-    /* Set text color inside navbar to white */
-    .navbar .logo {
-        font-size: 24px;
+    .logo {
+        color: var(--text-light);
+        font-size: 1.5rem;
         font-weight: bold;
     }
 
-    .navbar .search-bar {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        margin: 0 30px;
-    }
-
-    /* Buttons container */
-    .navbar .buttons-container {
+    .buttons-container {
         display: flex;
         align-items: center;
-        gap: 15px;
+        gap: var(--spacing-md);
     }
 
-    /* Buttons style */
-    .navbar .buttons a {
-        padding: 12px 20px;
-        font-size: 18px;
-        font-weight: bold;
-        background-color: #4CAF50;
-        color: white;
-        text-decoration: none;
-        border-radius: 6px;
-        transition: background-color 0.3s ease;
+    .user-name {
+        color: var(--text-light);
+        margin-right: var(--spacing-md);
     }
 
-    .navbar .buttons a:hover {
-        background-color: #45a049;
+    /* Delete button */
+    .delete-button {
+        position: absolute;
+        bottom: var(--spacing-md);
+        right: var(--spacing-md);
+        padding: var(--spacing-xs) var(--spacing-md);
+        background-color: var(--error-color);
+        color: var(--text-light);
+        border: none;
+        border-radius: var(--border-radius-md);
+        cursor: pointer;
+        font-weight: 500;
+        transition: all var(--transition-speed);
     }
 
-    /* User name */
-    .navbar .user-name {
-        font-size: 20px;
-        font-weight: bold;
-        margin-left: 15px;
-        white-space: nowrap;
+    .delete-button:hover {
+        background-color: #d32f2f;
+        transform: translateY(-2px);
     }
 
+    /* Loading and error states */
+    .loading-message,
+    .error-message {
+        text-align: center;
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius-md);
+        margin: var(--spacing-md) 0;
+    }
 
-        .section-heading {
-            font-size: 2rem;
-            font-weight: bold;
-            color: #ffbf00;
-            margin-top: 20px;
+    .loading-message {
+        color: var(--text-muted);
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .error-message {
+        color: var(--error-color);
+        background-color: rgba(255, 68, 68, 0.1);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        #admin-content {
+            padding: var(--spacing-md);
         }
 
-
         .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-            margin: 50px;
+            grid-template-columns: 1fr;
+        }
+
+        .section-heading {
+            font-size: 1.5rem;
+            margin: var(--spacing-lg) 0;
         }
 
         .box {
-            background-color: #000000;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-            padding: 20px;
+            padding: var(--spacing-md);
+        }
+
+        .navbar {
+            flex-direction: column;
+            padding: var(--spacing-sm);
+            gap: var(--spacing-sm);
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            color: white;
         }
 
-        .box .item {
-            font-size: 1rem;
-            margin: 5px 0;
-            padding: 5px;
-            color: white;
+        .buttons-container {
+            flex-direction: column;
         }
-        .delete-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            background-color: #f44336;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .delete-button:hover {
-            background-color: #d32f2f;
-        }
-        .box:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+    }
     </style>
 </head>
 <body>
-
-<%
-
-    Cookie[] cookies = request.getCookies();
-    String authToken = null;
-    String userName = null;
-
-    if (cookies != null) {
-        for (Cookie c : cookies) {
-            if ("auth_token".equals(c.getName())) {
-                authToken = c.getValue();
-                break;
-            }
-        }
-    }
-
-        if (authToken != null) {
-        try {
-            URL url = new URL("http://localhost:8081/validate-token");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Cookie", "auth_token=" + authToken);
-            conn.setRequestProperty("Accept", "text/plain");
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode == 200) {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                userName = reader.readLine();
-                reader.close();
-            }
-        } catch (Exception e) {
-            userName = null;
-        }
-    }
-
-%>
-
-<nav class="navbar">
-    <div class="logo">C2C Admin page</div>
-
-    <div class="buttons-container">
-        <div class="buttons">
-
-                <a href="/signin">Sign In</a>
-                <a href="/signup" >Sign Up</a>
+    <nav class="navbar">
+        <div class="logo">C2C Admin Panel</div>
+        <div class="buttons-container">
+            <div class="buttons">
+                <a href="#" onclick="handleLogout(event)">Logout</a>
+            </div>
+            <span class="user-name"></span>
         </div>
+    </nav>
 
-        <% if (userName != null && !userName.isEmpty()) { %>
-            <span class="user-name">Hello, <%= userName %>!</span>
-        <% } %>
+    <div id="admin-content" class="main-content">
+        <h2 class="section-heading">Users</h2>
+        <div id="users-container" class="container"></div>
+
+        <h2 class="section-heading">Offers</h2>
+        <div id="offers-container" class="container"></div>
+
+        <h2 class="section-heading">Products</h2>
+        <div id="products-container" class="container"></div>
+
+        <h2 class="section-heading">Orders</h2>
+        <div id="orders-container" class="container"></div>
     </div>
-</nav>
-<% if (userName != null && !userName.isEmpty()) { %>
-    <h2 class="section-heading">Users</h2>
-    <div class="container">
-        <%
+
+    <script>
+        async function checkAuth() {
             try {
-                URL url = new URL("http://localhost:8081/getUsers");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept", "application/json");
-
-                if (conn.getResponseCode() == 200) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    JSONArray users = new JSONArray(reader.readLine());
-                    System.out.println(users);
-                    reader.close();
-
-                    for (int i = 0; i < users.length(); i++) {
-                        JSONObject user = users.getJSONObject(i);
-                        String entityId = user.getString("id");
-        %> 
-                        <div class="box">
-                            <div class="item">User ID:<%= user.getString("id") %></div>
-                            <div class="item">Name: <%= user.getString("name") %></div>
-                            <div class="item">Email: <%= user.getString("email") %></div>
-                        <form:form method="POST" action="/delete-user" modelAttribute="deleteEntityDetails">
-                            <form:hidden path="entityId" value="<%= entityId %>" />
-                            <form:button class="delete-button">Delete</form:button>
-                        </form:form>
-                        </div>
-        <%
-                    }
+                const token = localStorage.getItem('token');
+                const userStr = localStorage.getItem('user');
+                
+                if (!token || !userStr) {
+                    throw new Error('No auth credentials');
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        %>
-    </div>
 
-    <h2 class="section-heading">Offers</h2>
-    <div class="container">
-        <%
+                const user = JSON.parse(userStr);
+                if (user.role !== 'ADMIN') {
+                    throw new Error('Not an admin');
+                }
+
+                document.querySelector('.user-name').textContent = 'Hello, ' + user.name + '!';
+
+                const response = await apiCaller.get('/api/auth/validate-token');
+                if (!response.success) {
+                    throw new Error('Token validation failed');
+                }
+
+                await fetchAllData();
+            } catch (error) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = error.message === 'Not an admin' ? '/' : '/admin-login';
+            }
+        }
+
+        async function fetchAllData() {
             try {
-                URL url = new URL("http://localhost:8081/getOffers");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept", "application/json");
-
-                if (conn.getResponseCode() == 200) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    JSONArray offers = new JSONArray(reader.readLine());
-                    reader.close();
-
-                    for (int i = 0; i < offers.length(); i++) {
-                        JSONObject offer = offers.getJSONObject(i);
-                        String entityId = offer.getString("offerId");
-        %>
-                        <div class="box">
-                            <div class="item">Offer ID: <%= offer.getString("offerId") %></div>
-                            <div class="item">Buyer ID: <%= offer.getString("buyerId") %></div>
-                            <div class="item">Offer Date: <%= offer.getString("offerDate") %></div>
-                            <div class="item">Price: ₹<%= offer.getDouble("offeredPrice") %></div>
-                            <div class="item">Product ID: <%= offer.getString("productId") %></div>
-                            <div class="item">Status: <%= offer.getString("status") %></div>
-                            <div class="item">Seller ID: <%= offer.getString("sellerId") %></div>
-                        <form:form method="POST" action="/delete-offer" modelAttribute="deleteEntityDetails">
-                            <form:hidden path="entityId" value="<%= entityId %>" />
-                            <form:button class="delete-button">Delete</form:button>
-                        </form:form>
-                        </div>
-        <%
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                await Promise.all([
+                    fetchAndRender('users', renderUsers),
+                    fetchAndRender('offers/all', renderOffers),
+                    fetchAndRender('products', renderProducts),
+                    fetchAndRender('orders', renderOrders)
+                ]);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                const containers = document.querySelectorAll('.container');
+                containers.forEach(container => {
+                    container.innerHTML = '<div class="error-message">Failed to load data</div>';
+                });
             }
-        %>
-    </div>
+        }
 
-    <h2 class="section-heading">Products</h2>
-    <div class="container">
-        <%
+        async function fetchAndRender(endpoint, renderFunction) {
+            const response = await apiCaller.get('/api/' + endpoint);
+            if (response.success) {
+                renderFunction(response.data);
+            }
+        }
+
+        async function deleteEntity(type, id) {
+            if (!confirm('Are you sure you want to delete this item?')) return;
+
             try {
-                URL url = new URL("http://localhost:8081/getProducts");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept", "application/json");
-
-                if (conn.getResponseCode() == 200) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    JSONArray products = new JSONArray(reader.readLine());
-                    reader.close();
-
-                    for (int i = 0; i < products.length(); i++) {
-                        JSONObject product = products.getJSONObject(i);
-                        String entityId = product.getString("productId");
-        %>
-                        <div class="box">
-                            <div class="item">Product ID :<%= product.getString("productId") %></div>
-                            <div class="item">Title: <%= product.getString("title") %></div>
-                            <div class="item">Description: <%= product.getString("description") %></div>
-                            <div class="item">Price: ₹<%= product.getDouble("price") %></div>
-                            <div class="item">Category: <%= product.getString("category") %></div>
-                            <div class="item">Condition: <%= product.getString("productCondition") %></div>
-                            <div class="item">Seller Id: <%= product.getString("sellerId") %></div>
-                            <div class="item">Status: <%= product.getString("status") %></div>
-                        <form:form method="POST" action="/delete-product" modelAttribute="deleteEntityDetails">
-                            <form:hidden path="entityId" value="<%= entityId %>" />
-                            <form:button class="delete-button">Delete</form:button>
-                        </form:form>
-                        </div>
-        <%
-                    }
+                const response = await apiCaller.delete('/api/' + type + '/' + id);
+                if (response.success) {
+                    await fetchAllData();
+                } else {
+                    throw new Error(response.message || 'Failed to delete item');
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (error) {
+                console.error('Error deleting item:', error);
+                alert('Failed to delete item. Please try again.');
             }
-        %>
-    </div>
+        }
 
-    <h2 class="section-heading">Orders</h2>
-    <div class="container">
-        <%
-            try {
-                URL url = new URL("http://localhost:8081/getOrders");
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("GET");
-                conn.setRequestProperty("Accept", "application/json");
-
-                if (conn.getResponseCode() == 200) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                    JSONArray orders = new JSONArray(reader.readLine());
-                    reader.close();
-
-                    for (int i = 0; i < orders.length(); i++) {
-                        JSONObject order = orders.getJSONObject(i);
-                        String entityId = order.getString("orderId");
-        %>
-                        <div class="box">
-                            <div class="item">Order ID: <%= order.getString("orderId") %></div>
-                            <div class="item">Buyer ID: <%= order.getString("buyerId") %></div>
-                            <div class="item">Seller ID: <%= order.getString("sellerId") %></div>
-                            <div class="item">Order Price: ₹<%= order.getDouble("orderPrice") %></div>
-                            <div class="item">Product ID: <%= order.getString("productId") %></div>
-                            <div class="item">Order Date: <%= order.getString("orderDate") %></div>
-                            <div class="item">Payment Method: <%= order.getString("paymentMethod") %></div>
-                        <form:form method="POST" action="/delete-order" modelAttribute="deleteEntityDetails">
-                            <form:hidden path="entityId" value="<%= entityId %>" />
-                            <form:button class="delete-button">Delete</form:button>
-                        </form:form>
-                        </div>
-        <%
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+        function renderUsers(users) {
+            const container = document.getElementById('users-container');
+            if (!users || users.length === 0) {
+                container.innerHTML = '<div class="loading-message">No users found</div>';
+                return;
             }
-        %>
-    </div>
 
-<% } else { %>
-    <p style="color: #ffbf00; font-size: 1.5rem;">Please sign in to view content.</p>
-<% } %>
+            container.innerHTML = users.map(user => 
+                '<div class="box">' +
+                '<div class="item">User ID: ' + user.id + '</div>' +
+                '<div class="item">Name: ' + user.name + '</div>' +
+                '<div class="item">Email: ' + user.email + '</div>' +
+                '<button class="delete-button" onclick="deleteEntity(\'users\', \'' + user.id + '\')">Delete</button>' +
+                '</div>'
+            ).join('');
+        }
 
+        function renderOffers(offers) {
+            const container = document.getElementById('offers-container');
+            if (!offers || offers.length === 0) {
+                container.innerHTML = '<div class="loading-message">No offers found</div>';
+                return;
+            }
 
+            container.innerHTML = offers.map(offer => 
+                '<div class="box">' +
+                '<div class="item">Offer ID: ' + offer.offerId + '</div>' +
+                '<div class="item">Buyer ID: ' + offer.buyerId + '</div>' +
+                '<div class="item">Seller ID: ' + offer.sellerId + '</div>' +
+                '<div class="item">Price: ₹' + offer.offeredPrice + '</div>' +
+                '<div class="item">Status: ' + offer.status + '</div>' +
+                '<button class="delete-button" onclick="deleteEntity(\'offers\', \'' + offer.offerId + '\')">Delete</button>' +
+                '</div>'
+            ).join('');
+        }
+
+        function renderProducts(products) {
+            const container = document.getElementById('products-container');
+            if (!products || products.length === 0) {
+                container.innerHTML = '<div class="loading-message">No products found</div>';
+                return;
+            }
+
+            container.innerHTML = products.map(product => 
+                '<div class="box">' +
+                '<div class="item">Product ID: ' + product.id + '</div>' +
+                '<div class="item">Title: ' + product.title + '</div>' +
+                '<div class="item">Price: ₹' + product.price + '</div>' +
+                '<div class="item">Status: ' + product.status + '</div>' +
+                '<button class="delete-button" onclick="deleteEntity(\'products\', \'' + product.id + '\')">Delete</button>' +
+                '</div>'
+            ).join('');
+        }
+
+        function renderOrders(orders) {
+            const container = document.getElementById('orders-container');
+            if (!orders || orders.length === 0) {
+                container.innerHTML = '<div class="loading-message">No orders found</div>';
+                return;
+            }
+
+            container.innerHTML = orders.map(order => 
+                '<div class="box">' +
+                '<div class="item">Order ID: ' + order.orderId + '</div>' +
+                '<div class="item">Buyer ID: ' + order.buyerId + '</div>' +
+                '<div class="item">Seller ID: ' + order.sellerId + '</div>' +
+                '<div class="item">Price: ₹' + order.orderPrice + '</div>' +
+                '<div class="item">Date: ' + order.orderDate + '</div>' +
+                '<button class="delete-button" onclick="deleteEntity(\'orders\', \'' + order.orderId + '\')">Delete</button>' +
+                '</div>'
+            ).join('');
+        }
+
+        function handleLogout(event) {
+            event.preventDefault();
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = '/admin-login';
+        }
+
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
 </body>
 </html>
